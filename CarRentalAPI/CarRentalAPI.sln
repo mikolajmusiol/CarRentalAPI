@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33530.505
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarRentalAPI", "CarRentalAPI.csproj", "{53C7F3FC-ABD7-415A-B008-38C6C0EF1426}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{53C7F3FC-ABD7-415A-B008-38C6C0EF1426}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53C7F3FC-ABD7-415A-B008-38C6C0EF1426}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53C7F3FC-ABD7-415A-B008-38C6C0EF1426}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53C7F3FC-ABD7-415A-B008-38C6C0EF1426}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {225C555B-09A3-48DA-A4BC-5429ED2E34B3}
+	EndGlobalSection
+EndGlobal
