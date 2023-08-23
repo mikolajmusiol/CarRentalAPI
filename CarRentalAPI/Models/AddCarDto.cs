@@ -1,18 +1,23 @@
-﻿namespace CarRentalAPI.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace CarRentalAPI.Models
 {
-    public class Car
+    public class AddCarDto
     {
-        public int Id { get; set; }
+        [Required]
+        [MaxLength(25)]
         public string Brand { get; set; }
+
+        [Required]
         public string Model { get; set; }
+
         public int YearOfProduction { get; set; }
         public int? Mileage { get; set; }
         public string? Color { get; set; }
         public int HorsePower { get; set; }
         public string? Description { get; set; }
-        public decimal Price { get; set; }
 
-        public int? OrderId { get; set; }
-        public virtual Order Order { get; set; }
+        [Required]
+        public decimal Price { get; set; }
     }
 }

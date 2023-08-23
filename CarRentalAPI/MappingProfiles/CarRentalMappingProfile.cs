@@ -20,6 +20,8 @@ namespace CarRentalAPI.MappingProfiles
                 .ForMember(m => m.Cars, c => c.MapFrom(s => s.Cars))
                 .ForMember(m => m.FirstName, c => c.MapFrom(s => s.Client.FirstName))
                 .ForMember(m => m.LastName, c => c.MapFrom(s => s.Client.LastName));
+
+            CreateMap<AddCarDto, Car>();
         }
     }
 }
