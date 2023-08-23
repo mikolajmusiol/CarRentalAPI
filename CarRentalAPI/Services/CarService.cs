@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using CarRentalAPI.Entities;
+using CarRentalAPI.Exceptions;
 using CarRentalAPI.Models;
 using CarRentalAPI.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace CarRentalAPI.Services
 {
@@ -25,8 +25,7 @@ namespace CarRentalAPI.Services
 
         public CarDto GetById(int id)
         {
-            var car = _dbContext.Cars.FirstOrDefault(c => c.Id == id);
-            //possible exception (create handler)
+            var car = GetCar(id);
 
             return _mapper.Map<CarDto>(car);
         }
@@ -41,8 +40,7 @@ namespace CarRentalAPI.Services
 
         public void UpdateById(int id, UpdateCarDto carDto)
         {
-            var car = _dbContext.Cars.FirstOrDefault(_c => _c.Id == id);
-            //possible exception (create handler)
+            var car = GetCar(id);
 
             car.Mileage = carDto.Mileage ?? car.Mileage;
             car.Color = carDto.Color ?? car.Color;
@@ -55,10 +53,23 @@ namespace CarRentalAPI.Services
 
         public void DeleteById(int id)
         {
-            var car = _dbContext.Cars.FirstOrDefault(_c => _c.Id == id);
-            //exc
+            var car = GetCar(id);
             _dbContext.Cars.Remove(car);
             _dbContext.SaveChanges();
+        }
+
+        private Car GetCar(int id)
+        {
+            var car = _dbContext.Cars.FirstOrDefault(_c => _c.Id == id);
+
+            if (car is null)
+            {
+                throw new NotFoundException("Car not found");
+            }
+            else
+            {
+                return car;
+            }
         }
     }
 }

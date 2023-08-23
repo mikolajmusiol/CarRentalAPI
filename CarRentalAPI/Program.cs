@@ -1,5 +1,6 @@
 using CarRentalAPI;
 using CarRentalAPI.Entities;
+using CarRentalAPI.MIddleware;
 using CarRentalAPI.Services;
 using CarRentalAPI.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -13,12 +14,15 @@ builder.Services.AddDbContext<CarRentalDbContext>(options => options.UseSqlServe
 builder.Services.AddScoped<CarSeeder>();
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddScoped<ICarService, CarService>();
+builder.Services.AddScoped<ErrorHandlingMiddleware>();
 
 var app = builder.Build();
 
 var scope = app.Services.CreateScope();
 var seeder = scope.ServiceProvider.GetRequiredService<CarSeeder>();
 seeder.Seed();
+
+app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 
