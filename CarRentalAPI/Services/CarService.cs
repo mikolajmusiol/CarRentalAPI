@@ -48,6 +48,7 @@ namespace CarRentalAPI.Services
             car.Description = carDto.Description ?? car.Description;
             car.Price = carDto.Price ?? car.Price;
 
+            _dbContext.Cars.Update(car);
             _dbContext.SaveChanges();
         }
 
@@ -60,7 +61,7 @@ namespace CarRentalAPI.Services
 
         private Car GetCar(int id)
         {
-            var car = _dbContext.Cars.FirstOrDefault(_c => _c.Id == id);
+            var car = _dbContext.Cars.FirstOrDefault(c => c.Id == id);
 
             if (car is null)
             {

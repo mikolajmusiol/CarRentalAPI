@@ -13,7 +13,10 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<CarRentalDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("CarRentalDbConnection")));
 builder.Services.AddScoped<CarSeeder>();
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
 builder.Services.AddScoped<ICarService, CarService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+
 builder.Services.AddScoped<ErrorHandlingMiddleware>();
 
 var app = builder.Build();

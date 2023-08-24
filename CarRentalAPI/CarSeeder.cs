@@ -1,4 +1,5 @@
 ﻿using CarRentalAPI.Entities;
+using Humanizer;
 
 namespace CarRentalAPI
 {

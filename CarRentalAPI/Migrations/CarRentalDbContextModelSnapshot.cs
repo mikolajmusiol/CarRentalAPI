@@ -78,9 +78,6 @@ namespace CarRentalAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
@@ -88,8 +85,6 @@ namespace CarRentalAPI.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
 
                     b.ToTable("Cars");
                 });
@@ -142,29 +137,28 @@ namespace CarRentalAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("CarId")
+                        .HasColumnType("int");
+
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
 
-                    b.Property<TimeSpan>("RentalPeriod")
-                        .HasColumnType("time");
+                    b.Property<DateTime>("RentalFrom")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("RentalTo")
+                        .HasColumnType("datetime2");
 
                     b.Property<decimal>("Value")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CarId");
+
                     b.HasIndex("ClientId");
 
                     b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("CarRentalAPI.Entities.Car", b =>
-                {
-                    b.HasOne("CarRentalAPI.Entities.Order", "Order")
-                        .WithMany("Cars")
-                        .HasForeignKey("OrderId");
-
-                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("CarRentalAPI.Entities.Client", b =>
@@ -180,11 +174,19 @@ namespace CarRentalAPI.Migrations
 
             modelBuilder.Entity("CarRentalAPI.Entities.Order", b =>
                 {
+                    b.HasOne("CarRentalAPI.Entities.Car", "Car")
+                        .WithMany()
+                        .HasForeignKey("CarId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("CarRentalAPI.Entities.Client", "Client")
                         .WithMany("Orders")
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Car");
 
                     b.Navigation("Client");
                 });
@@ -198,11 +200,6 @@ namespace CarRentalAPI.Migrations
             modelBuilder.Entity("CarRentalAPI.Entities.Client", b =>
                 {
                     b.Navigation("Orders");
-                });
-
-            modelBuilder.Entity("CarRentalAPI.Entities.Order", b =>
-                {
-                    b.Navigation("Cars");
                 });
 #pragma warning restore 612, 618
         }

@@ -17,11 +17,16 @@ namespace CarRentalAPI.MappingProfiles
             CreateMap<Car, CarDto>();
 
             CreateMap<Order, OrderDto>()
-                .ForMember(m => m.Cars, c => c.MapFrom(s => s.Cars))
+                .ForMember(m => m.Car, c => c.MapFrom(s => s.Car))
+                .ForMember(m => m.Email, c => c.MapFrom(s => s.Client.Email))
                 .ForMember(m => m.FirstName, c => c.MapFrom(s => s.Client.FirstName))
                 .ForMember(m => m.LastName, c => c.MapFrom(s => s.Client.LastName));
 
             CreateMap<AddCarDto, Car>();
+
+            CreateMap<CreateOrderDto, Order>();
+
+            CreateMap<UpdateOrderDto,  Order>();
         }
     }
 }
