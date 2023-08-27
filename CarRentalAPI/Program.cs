@@ -22,6 +22,7 @@ builder.Services.AddScoped<ICarService, CarService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 
 builder.Services.AddScoped<ErrorHandlingMiddleware>();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
@@ -32,6 +33,12 @@ seeder.Seed();
 app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.UseHttpsRedirection();
+
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "CarRental API");
+});
 
 app.UseAuthorization();
 
