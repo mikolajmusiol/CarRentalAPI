@@ -10,11 +10,13 @@ namespace CarRentalAPI.Services
     {
         private readonly CarRentalDbContext _dbContext;
         private readonly IMapper _mapper;
+        private readonly ILogger<CarService> _logger;
 
-        public CarService(CarRentalDbContext dbContext, IMapper mapper)
+        public CarService(CarRentalDbContext dbContext, IMapper mapper, ILogger<CarService> logger)
         {
             _dbContext = dbContext;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public IEnumerable<CarDto> GetAll()
@@ -65,6 +67,7 @@ namespace CarRentalAPI.Services
 
             if (car is null)
             {
+                _logger.LogError("Car not found");
                 throw new NotFoundException("Car not found");
             }
             else

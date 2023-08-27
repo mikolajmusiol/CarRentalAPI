@@ -4,9 +4,13 @@ using CarRentalAPI.MIddleware;
 using CarRentalAPI.Services;
 using CarRentalAPI.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using NLog.Web;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Logging.ClearProviders();
+builder.Host.UseNLog();
 
 builder.Services.AddControllers();
 

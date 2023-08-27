@@ -12,11 +12,13 @@ namespace CarRentalAPI.Services
     {
         private readonly CarRentalDbContext _dbContext;
         private readonly IMapper _mapper;
+        private readonly ILogger<OrderService> _logger;
 
-        public OrderService(CarRentalDbContext dbContext, IMapper mapper)
+        public OrderService(CarRentalDbContext dbContext, IMapper mapper, ILogger<OrderService> logger)
         {
             _dbContext = dbContext;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public IEnumerable<OrderDto> GetAllOrders()
@@ -43,6 +45,7 @@ namespace CarRentalAPI.Services
 
             if (client is null)
             {
+                _logger.LogError("Client not found");
                 throw new NotFoundException("Client not found");
             }
 
@@ -50,6 +53,7 @@ namespace CarRentalAPI.Services
 
             if (car is null)
             {
+                _logger.LogError("Car not found");
                 throw new NotFoundException("Car not found");
             }
 
@@ -74,7 +78,8 @@ namespace CarRentalAPI.Services
                 var car = _dbContext.Cars.FirstOrDefault(c => c.Id == updateOrderDto.Car.Id);
 
                 if (car is null)
-                {
+                {   
+                    _logger.LogError("Car not found");
                     throw new NotFoundException("Car not found");
                 }
 
@@ -85,6 +90,7 @@ namespace CarRentalAPI.Services
             order.RentalTo = updateOrderDto.RentalTo ?? order.RentalTo;
             order.Value = order.Car.Price * (int)(order.RentalTo - order.RentalFrom).TotalDays;
 
+            _logger.LogInformation("Order updated");
             _dbContext.Orders.Update(order);
             _dbContext.SaveChanges();
         }
@@ -105,7 +111,8 @@ namespace CarRentalAPI.Services
                 .FirstOrDefault(x => x.Id == id);
 
             if (order is null)
-            {
+            {   
+                _logger.LogError("Order not found");
                 throw new NotFoundException("Order not found");
             }
 

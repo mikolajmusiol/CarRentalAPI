@@ -8,9 +8,13 @@
         public string Email { get; set; }
         public int PhoneNumber { get; set; }
         public DateTime DateOfBirth { get; set; }
+        public string PasswordHash { get; set; }
 
         public int AddressId { get; set; }
         public virtual Address Address { get; set; }
         public virtual List<Order> Orders { get; set; }
+
+        public int RoleId { get; set; }
+        public virtual Role Role { get; set; }
     }
 }
