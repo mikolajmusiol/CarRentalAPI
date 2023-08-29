@@ -10,6 +10,7 @@
         public string? Color { get; set; }
         public int HorsePower { get; set; }
         public string? Description { get; set; }
-        public decimal Price { get; set; }
+
+        public virtual Price Price { get; set; }
     }
 }

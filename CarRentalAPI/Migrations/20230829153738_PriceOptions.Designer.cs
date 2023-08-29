@@ -4,6 +4,7 @@ using CarRentalAPI.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarRentalAPI.Migrations
 {
     [DbContext(typeof(CarRentalDbContext))]
-    partial class CarRentalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230829153738_PriceOptions")]
+    partial class PriceOptions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -78,10 +81,16 @@ namespace CarRentalAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("PriceId")
+                        .HasColumnType("int");
+
                     b.Property<int>("YearOfProduction")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PriceId")
+                        .IsUnique();
 
                     b.ToTable("Cars");
                 });
@@ -175,9 +184,6 @@ namespace CarRentalAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CarId")
-                        .HasColumnType("int");
-
                     b.Property<decimal?>("PriceForADay")
                         .HasColumnType("decimal(18,2)");
 
@@ -188,9 +194,6 @@ namespace CarRentalAPI.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CarId")
-                        .IsUnique();
 
                     b.ToTable("Prices");
                 });
@@ -210,6 +213,17 @@ namespace CarRentalAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("CarRentalAPI.Entities.Car", b =>
+                {
+                    b.HasOne("CarRentalAPI.Entities.Price", "Price")
+                        .WithOne("Car")
+                        .HasForeignKey("CarRentalAPI.Entities.Car", "PriceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Price");
                 });
 
             modelBuilder.Entity("CarRentalAPI.Entities.Client", b =>
@@ -250,32 +264,21 @@ namespace CarRentalAPI.Migrations
                     b.Navigation("Client");
                 });
 
-            modelBuilder.Entity("CarRentalAPI.Entities.Price", b =>
-                {
-                    b.HasOne("CarRentalAPI.Entities.Car", "Car")
-                        .WithOne("Price")
-                        .HasForeignKey("CarRentalAPI.Entities.Price", "CarId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Car");
-                });
-
             modelBuilder.Entity("CarRentalAPI.Entities.Address", b =>
                 {
                     b.Navigation("Client")
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CarRentalAPI.Entities.Car", b =>
-                {
-                    b.Navigation("Price")
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("CarRentalAPI.Entities.Client", b =>
                 {
                     b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("CarRentalAPI.Entities.Price", b =>
+                {
+                    b.Navigation("Car")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

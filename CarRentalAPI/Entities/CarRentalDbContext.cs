@@ -9,6 +9,9 @@ namespace CarRentalAPI.Entities
         public DbSet<Order> Orders { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<Address> Addresses { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<Price> Prices { get; set; }
+
 
         public CarRentalDbContext(DbContextOptions<CarRentalDbContext> options) : base(options) { }
 
@@ -51,6 +54,10 @@ namespace CarRentalAPI.Entities
                 .Property(c => c.Email)
                 .IsRequired()
                 .HasMaxLength(50);
+
+            modelBuilder.Entity<Role>()
+                .Property(c => c.Name)
+                .IsRequired();
         }
     }
 }

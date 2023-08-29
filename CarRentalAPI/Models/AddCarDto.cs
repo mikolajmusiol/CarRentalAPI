@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CarRentalAPI.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace CarRentalAPI.Models
 {
@@ -18,6 +19,6 @@ namespace CarRentalAPI.Models
         public string? Description { get; set; }
 
         [Required]
-        public decimal Price { get; set; }
+        public Price Price { get; set; }
     }
 }

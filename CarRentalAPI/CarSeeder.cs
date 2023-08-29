@@ -37,11 +37,28 @@ namespace CarRentalAPI
                     Color = "Red",
                     HorsePower = 60,
                     Description = null,
-                    Price = 3000
+                    Price = new Price()
+                    {
+                        PriceForAnHour = 60,
+                        PriceForADay = 500,
+                        PriceForAWeek = 3000
+                    }
                 }
             };
 
             return cars;
+        }
+
+        private IEnumerable<Role> GetRoles()
+        {
+            var roles = new List<Role>()
+            {
+                new Role() { Name = "Tenant" },
+                new Role() { Name = "Employee"},
+                new Role() { Name = "Admin"}
+            };
+
+            return roles;
         }
 
     }

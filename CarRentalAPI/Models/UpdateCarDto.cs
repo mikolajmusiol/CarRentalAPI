@@ -1,4 +1,6 @@
-﻿namespace CarRentalAPI.Models
+﻿using CarRentalAPI.Entities;
+
+namespace CarRentalAPI.Models
 {
     public class UpdateCarDto
     {
@@ -6,6 +8,6 @@
         public string? Color { get; set; }
         public int? HorsePower { get; set; }
         public string? Description { get; set; }
-        public decimal? Price { get; set; }
+        public Price? Price { get; set; }
     }
 }

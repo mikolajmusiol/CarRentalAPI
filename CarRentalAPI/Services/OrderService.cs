@@ -61,7 +61,7 @@ namespace CarRentalAPI.Services
 
             order.Car = car;
             order.Client = client;
-            order.Value = car.Price * (int)(order.RentalTo - order.RentalFrom).TotalDays;
+            //order.Value = car.Price * (int)(order.RentalTo - order.RentalFrom).TotalDays;
 
             _dbContext.Orders.Add(order);
             _dbContext.SaveChanges();
@@ -88,7 +88,7 @@ namespace CarRentalAPI.Services
 
             order.RentalFrom = updateOrderDto.RentalFrom ?? order.RentalFrom;
             order.RentalTo = updateOrderDto.RentalTo ?? order.RentalTo;
-            order.Value = order.Car.Price * (int)(order.RentalTo - order.RentalFrom).TotalDays;
+            //order.Value = order.Car.Price * (int)(order.RentalTo - order.RentalFrom).TotalDays;
 
             _logger.LogInformation("Order updated");
             _dbContext.Orders.Update(order);

@@ -1,4 +1,7 @@
-﻿namespace CarRentalAPI.Models
+﻿using CarRentalAPI.Entities;
+using System.Text.Json.Serialization;
+
+namespace CarRentalAPI.Models
 {
     public class CarDto
     {
@@ -10,6 +13,7 @@
         public string? Color { get; set; }
         public int HorsePower { get; set; }
         public string? Description { get; set; }
-        public decimal Price { get; set; }
+
+        public Price Price { get; set; }
     }
 }

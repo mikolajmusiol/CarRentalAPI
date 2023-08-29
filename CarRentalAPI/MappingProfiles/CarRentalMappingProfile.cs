@@ -24,6 +24,8 @@ namespace CarRentalAPI.MappingProfiles
 
             CreateMap<AddCarDto, Car>();
 
+            CreateMap<UpdateCarDto, Car>();
+
             CreateMap<CreateOrderDto, Order>();
 
             CreateMap<UpdateOrderDto,  Order>();

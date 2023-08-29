@@ -3,6 +3,7 @@ using CarRentalAPI.Entities;
 using CarRentalAPI.Exceptions;
 using CarRentalAPI.Models;
 using CarRentalAPI.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarRentalAPI.Services
 {
@@ -21,7 +22,10 @@ namespace CarRentalAPI.Services
 
         public IEnumerable<CarDto> GetAll()
         {
-            var cars = _dbContext.Cars.ToList();
+            var cars = _dbContext.Cars
+                .Include(x => x.Price)
+                .ToList();
+
             return _mapper.Map<List<CarDto>>(cars); ;
         }
 
@@ -48,7 +52,10 @@ namespace CarRentalAPI.Services
             car.Color = carDto.Color ?? car.Color;
             car.HorsePower = carDto.HorsePower ?? car.HorsePower;
             car.Description = carDto.Description ?? car.Description;
-            car.Price = carDto.Price ?? car.Price;
+
+            car.Price.PriceForAnHour = carDto.Price.PriceForAnHour ?? car.Price.PriceForAnHour;
+            car.Price.PriceForADay = carDto.Price.PriceForADay ?? car.Price.PriceForADay;
+            car.Price.PriceForAWeek = carDto.Price.PriceForAWeek ?? car.Price.PriceForAWeek;
 
             _dbContext.Cars.Update(car);
             _dbContext.SaveChanges();
@@ -63,7 +70,9 @@ namespace CarRentalAPI.Services
 
         private Car GetCar(int id)
         {
-            var car = _dbContext.Cars.FirstOrDefault(c => c.Id == id);
+            var car = _dbContext.Cars
+                .Include(x => x.Price)
+                .FirstOrDefault(c => c.Id == id);
 
             if (car is null)
             {
