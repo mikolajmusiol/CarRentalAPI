@@ -24,7 +24,7 @@ namespace CarRentalAPI.Services
         public IEnumerable<OrderDto> GetAllOrders()
         {
             var orders = _dbContext.Orders
-                .Include(x => x.Client)
+                //.Include(x => x.Client)
                 .Include(x => x.Car)
                 .ToList();
 
@@ -41,13 +41,13 @@ namespace CarRentalAPI.Services
         public int CreateOrder(CreateOrderDto createOrderDto)
         {
             
-            var client = _dbContext.Clients.FirstOrDefault(c => c.Email == createOrderDto.Email);
+            //var client = _dbContext.Clients.FirstOrDefault(c => c.Email == createOrderDto.Email);
 
-            if (client is null)
-            {
-                _logger.LogError("Client not found");
-                throw new NotFoundException("Client not found");
-            }
+            //if (client is null)
+            //{
+            //    _logger.LogError("Client not found");
+            //    throw new NotFoundException("Client not found");
+            //}
 
             var car = _dbContext.Cars.FirstOrDefault(n => n.Brand == createOrderDto.Brand && n.Model == createOrderDto.Model);
 
@@ -60,7 +60,7 @@ namespace CarRentalAPI.Services
             var order = _mapper.Map<Order>(createOrderDto);
 
             order.Car = car;
-            order.Client = client;
+            //order.Client = client;
             //order.Value = car.Price * (int)(order.RentalTo - order.RentalFrom).TotalDays;
 
             _dbContext.Orders.Add(order);
@@ -106,7 +106,7 @@ namespace CarRentalAPI.Services
         private Order GetOrder(int id)
         {
             var order = _dbContext.Orders
-                .Include(x => x.Client)
+                //.Include(x => x.)
                 .Include(x => x.Car)
                 .FirstOrDefault(x => x.Id == id);
 

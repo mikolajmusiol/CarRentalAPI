@@ -11,6 +11,11 @@ namespace CarRentalAPI.MIddleware
 			{
                 await next.Invoke(context);
             }
+            catch (BadRequestException badRequet)
+            {
+                context.Response.StatusCode = 400;
+                await context.Response.WriteAsync(badRequet.Message);
+            }
 			catch (NotFoundException notFound)
 			{
                 context.Response.StatusCode = 404;

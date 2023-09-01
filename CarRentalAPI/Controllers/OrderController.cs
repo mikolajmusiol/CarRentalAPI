@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CarRentalAPI.Controllers
 {
     [Route("api/orders")]
+    [ApiController]
     public class OrderController : ControllerBase
     {
         private readonly IOrderService _orderService;

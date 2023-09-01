@@ -7,7 +7,7 @@ namespace CarRentalAPI.Entities
     {
         public DbSet<Car> Cars { get; set; }
         public DbSet<Order> Orders { get; set; }
-        public DbSet<Client> Clients { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Price> Prices { get; set; }
@@ -27,7 +27,7 @@ namespace CarRentalAPI.Entities
                 .IsRequired();
 
             modelBuilder.Entity<Order>()
-                .Property(o => o.ClientId)
+                .Property(o => o.CreatedById)
                 .IsRequired();
 
             modelBuilder.Entity<Address>()
@@ -40,17 +40,17 @@ namespace CarRentalAPI.Entities
                 .IsRequired()
                 .HasMaxLength(50);
 
-            modelBuilder.Entity<Client>()
+            modelBuilder.Entity<User>()
                 .Property(c => c.FirstName)
                 .IsRequired()
                 .HasMaxLength(50);
 
-            modelBuilder.Entity<Client>()
+            modelBuilder.Entity<User>()
                 .Property(c => c.LastName)
                 .IsRequired()
                 .HasMaxLength(50);
 
-            modelBuilder.Entity<Client>()
+            modelBuilder.Entity<User>()
                 .Property(c => c.Email)
                 .IsRequired()
                 .HasMaxLength(50);

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CarRentalAPI.Controllers
 {
     [Route("api/cars")]
+    [ApiController]
     public class CarController : ControllerBase
     {
         private readonly ICarService _carService;

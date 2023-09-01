@@ -8,7 +8,7 @@ namespace CarRentalAPI.MappingProfiles
     {
         public CarRentalMappingProfile()
         {
-            CreateMap<Client, ClientDto>()
+            CreateMap<User, UserDto>()
                 .ForMember(m => m.City, c => c.MapFrom(s => s.Address.City))
                 .ForMember(m => m.Street, m => m.MapFrom(s => s.Address.Street))
                 .ForMember(m => m.PostalCode, m => m.MapFrom(s => s.Address.PostalCode))
@@ -18,9 +18,9 @@ namespace CarRentalAPI.MappingProfiles
 
             CreateMap<Order, OrderDto>()
                 .ForMember(m => m.Car, c => c.MapFrom(s => s.Car))
-                .ForMember(m => m.Email, c => c.MapFrom(s => s.Client.Email))
-                .ForMember(m => m.FirstName, c => c.MapFrom(s => s.Client.FirstName))
-                .ForMember(m => m.LastName, c => c.MapFrom(s => s.Client.LastName));
+                .ForMember(m => m.Email, c => c.MapFrom(s => s.CreatedBy.Email))
+                .ForMember(m => m.FirstName, c => c.MapFrom(s => s.CreatedBy.FirstName))
+                .ForMember(m => m.LastName, c => c.MapFrom(s => s.CreatedBy.LastName));
 
             CreateMap<AddCarDto, Car>();
 

@@ -22,6 +22,13 @@ namespace CarRentalAPI
                     _dbContext.Cars.AddRange(cars);
                     _dbContext.SaveChanges();
                 }
+
+                if (!_dbContext.Roles.Any())
+                {
+                    var roles = GetRoles();
+                    _dbContext.Roles.AddRange(roles);
+                    _dbContext.SaveChanges();
+                }
             }
         }
 

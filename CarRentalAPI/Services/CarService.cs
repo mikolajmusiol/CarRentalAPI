@@ -53,9 +53,12 @@ namespace CarRentalAPI.Services
             car.HorsePower = carDto.HorsePower ?? car.HorsePower;
             car.Description = carDto.Description ?? car.Description;
 
-            car.Price.PriceForAnHour = carDto.Price.PriceForAnHour ?? car.Price.PriceForAnHour;
-            car.Price.PriceForADay = carDto.Price.PriceForADay ?? car.Price.PriceForADay;
-            car.Price.PriceForAWeek = carDto.Price.PriceForAWeek ?? car.Price.PriceForAWeek;
+            if (carDto.Price != null)
+            {
+                car.Price.PriceForAnHour = carDto.Price.PriceForAnHour ?? car.Price.PriceForAnHour;
+                car.Price.PriceForADay = carDto.Price.PriceForADay ?? car.Price.PriceForADay;
+                car.Price.PriceForAWeek = carDto.Price.PriceForAWeek ?? car.Price.PriceForAWeek;
+            }
 
             _dbContext.Cars.Update(car);
             _dbContext.SaveChanges();
