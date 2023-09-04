@@ -6,11 +6,7 @@ namespace CarRentalAPI.Models
     public class CreateOrderDto
     {
         [Required]
-        public string Email { get; set; }
-        [Required]
-        public string Brand { get; set; }
-        [Required]
-        public string Model { get; set; }
+        public int CarId { get; set; }
         [Required]
         public DateTime RentalFrom { get; set; }
         [Required]

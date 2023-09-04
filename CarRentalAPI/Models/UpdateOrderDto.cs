@@ -6,6 +6,6 @@ namespace CarRentalAPI.Models
     {
         public DateTime? RentalFrom { get; set; }
         public DateTime? RentalTo { get; set; }
-        public Car? Car { get; set; }
+        public int? CarId { get; set; }
     }
 }

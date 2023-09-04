@@ -5,6 +5,8 @@ using CarRentalAPI.Models;
 using CarRentalAPI.Models.Validators;
 using CarRentalAPI.Services;
 using CarRentalAPI.Services.Interfaces;
+using CarRentalAPI.Utilities;
+using CarRentalAPI.Utilities.Interfaces;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
@@ -53,6 +55,7 @@ builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddScoped<ICarService, CarService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IOrderValueCalculator, OrderValueCalculator>();
 
 builder.Services.AddScoped<ErrorHandlingMiddleware>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();

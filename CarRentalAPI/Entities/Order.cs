@@ -7,7 +7,7 @@
         public DateTime RentalFrom { get; set; }
         public DateTime RentalTo { get; set; }
 
-        public int? CreatedById { get; set; }
+        public int CreatedById { get; set; }
         public virtual User CreatedBy { get; set; }
 
         public int CarId { get; set; }
