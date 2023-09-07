@@ -19,38 +19,38 @@ namespace CarRentalAPI.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult<List<CarDto>> GetAllCars()
+        public async Task<ActionResult<List<CarDto>>> GetAllCars()
         {
-            var carsDtos = _carService.GetAll();
+            var carsDtos = await _carService.GetAll();
             return Ok(carsDtos);
         }
 
         [HttpGet("{id}")]
         [AllowAnonymous]
-        public ActionResult<CarDto> GetCar([FromRoute] int id)
+        public async Task<ActionResult<CarDto>> GetCar([FromRoute] int id)
         {
-            var carDto = _carService.GetById(id);
+            var carDto = await _carService.GetById(id);
             return Ok(carDto);
         }
 
         [HttpPost]
-        public ActionResult AddCar([FromBody] AddCarDto carDto)
+        public async Task<ActionResult> AddCar([FromBody] AddCarDto carDto)
         {
-            int id = _carService.Add(carDto);
+            int id = await _carService.Add(carDto);
             return Created($"api/cars/{id}", null);
         }
 
         [HttpPut("{id}")]
-        public ActionResult UpdateCar([FromRoute] int id, [FromBody] UpdateCarDto carDto)
+        public async Task<ActionResult> UpdateCar([FromRoute] int id, [FromBody] UpdateCarDto carDto)
         {
-            _carService.UpdateById(id, carDto);
+            await _carService.UpdateById(id, carDto);
             return Ok();
         }
 
         [HttpDelete("{id}")]
-        public ActionResult DeleteCar([FromRoute] int id)
+        public async Task<ActionResult> DeleteCar([FromRoute] int id)
         {
-            _carService.DeleteById(id);
+            await _carService.DeleteById(id);
             return NoContent();
         }
     }

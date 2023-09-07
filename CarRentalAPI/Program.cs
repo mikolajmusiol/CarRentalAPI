@@ -92,7 +92,7 @@ app.UseCors("FrontEndClient");
 var scope = app.Services.CreateScope();
 var seeder = scope.ServiceProvider.GetRequiredService<CarSeeder>();
 
-seeder.Seed();
+await seeder.Seed();
 
 app.UseMiddleware<ErrorHandlingMiddleware>();
 

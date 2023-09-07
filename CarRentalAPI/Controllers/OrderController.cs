@@ -19,38 +19,38 @@ namespace CarRentalAPI.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<OrderDto>> GetAllOrders()
+        public async Task<ActionResult<List<OrderDto>>> GetAllOrders()
         {
-            List<OrderDto> orderDtos = _orderService.GetAllOrders();
+            List<OrderDto> orderDtos = await _orderService.GetAllOrders();
             return Ok(orderDtos);
         }
 
         [HttpGet("{orderId}")]
-        public ActionResult<OrderDto> GetOrder([FromRoute] int orderId)
+        public async Task<ActionResult<OrderDto>> GetOrder([FromRoute] int orderId)
         {
-            var orderDto = _orderService.GetOrderById(orderId);
+            var orderDto = await _orderService.GetOrderById(orderId);
             return Ok(orderDto);
         }
 
         [HttpPost]
         [Authorize(Policy = "IsAdult")]
-        public ActionResult CreateOrder([FromBody] CreateOrderDto orderDto)
+        public async Task<ActionResult> CreateOrder([FromBody] CreateOrderDto orderDto)
         {
-            int id = _orderService.CreateOrder(orderDto);
+            int id = await _orderService.CreateOrder(orderDto);
             return Created($"api/orders/{id}", null);
         }
 
         [HttpPut("{orderId}")]
-        public ActionResult UpdateOrder([FromRoute] int orderId, [FromBody] UpdateOrderDto updateOrderDto)
+        public async Task<ActionResult> UpdateOrder([FromRoute] int orderId, [FromBody] UpdateOrderDto updateOrderDto)
         {
-            _orderService.UpdateById(orderId, updateOrderDto);
+            await _orderService.UpdateById(orderId, updateOrderDto);
             return Ok();
         }
 
         [HttpDelete("{orderId}")]
-        public ActionResult DeleteOrder([FromRoute] int orderId)
+        public async Task<ActionResult> DeleteOrder([FromRoute] int orderId)
         {
-            _orderService.DeleteById(orderId);
+            await _orderService.DeleteById(orderId);
             return NoContent();
         }
     }

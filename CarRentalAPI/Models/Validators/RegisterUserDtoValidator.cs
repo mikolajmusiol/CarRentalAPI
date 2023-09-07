@@ -1,5 +1,6 @@
 ﻿using CarRentalAPI.Entities;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarRentalAPI.Models.Validators
 {

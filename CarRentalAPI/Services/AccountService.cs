@@ -24,7 +24,7 @@ namespace CarRentalAPI.Services
             _authenticationSettings = autheticationSettings;
         }
 
-        public void RegisterUser(RegisterUserDto dto)
+        public async Task RegisterUser(RegisterUserDto dto)
         {
             var newUser = new User()
             {
@@ -44,15 +44,15 @@ namespace CarRentalAPI.Services
 
             newUser.PasswordHash = _hasher.HashPassword(newUser, dto.Password);
 
-            _context.Users.Add(newUser);
-            _context.SaveChanges();
+            await _context.Users.AddAsync(newUser);
+            await _context.SaveChangesAsync();
         }
 
-        public string GenerateJwt(LoginDto dto)
+        public async Task<string> GenerateJwt(LoginDto dto)
         {
-            var user = _context.Users
+            var user = await _context.Users
                 .Include(u => u.Role)
-                .FirstOrDefault(u => u.Email == dto.Email);
+                .FirstOrDefaultAsync(u => u.Email == dto.Email);
 
             if (user is null)
             {

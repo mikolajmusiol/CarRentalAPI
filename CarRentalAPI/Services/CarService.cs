@@ -20,33 +20,33 @@ namespace CarRentalAPI.Services
             _logger = logger;
         }
 
-        public IEnumerable<CarDto> GetAll()
+        public async Task<IEnumerable<CarDto>> GetAll()
         {
-            var cars = _dbContext.Cars
+            var cars = await _dbContext.Cars
                 .Include(x => x.Price)
-                .ToList();
+                .ToListAsync();
 
             return _mapper.Map<List<CarDto>>(cars); ;
         }
 
-        public CarDto GetById(int id)
+        public async Task<CarDto> GetById(int id)
         {
-            var car = GetCar(id);
+            var car = await GetCar(id);
 
             return _mapper.Map<CarDto>(car);
         }
 
-        public int Add(AddCarDto addCarDto)
+        public async Task<int> Add(AddCarDto addCarDto)
         {
             var car = _mapper.Map<Car>(addCarDto);
-            _dbContext.Cars.Add(car);
-            _dbContext.SaveChanges();
+            await _dbContext.Cars.AddAsync(car);
+            await _dbContext.SaveChangesAsync();
             return car.Id;
         }
 
-        public void UpdateById(int id, UpdateCarDto carDto)
+        public async Task UpdateById(int id, UpdateCarDto carDto)
         {
-            var car = GetCar(id);
+            var car = await GetCar(id);
 
             car.Mileage = carDto.Mileage ?? car.Mileage;
             car.Color = carDto.Color ?? car.Color;
@@ -60,22 +60,22 @@ namespace CarRentalAPI.Services
                 car.Price.PriceForAWeek = carDto.Price.PriceForAWeek ?? car.Price.PriceForAWeek;
             }
 
-            _dbContext.Cars.Update(car);
-            _dbContext.SaveChanges();
+            await Task.Run(() => _dbContext.Cars.Update(car));
+            await _dbContext.SaveChangesAsync();
         }
 
-        public void DeleteById(int id)
+        public async Task DeleteById(int id)
         {
-            var car = GetCar(id);
-            _dbContext.Cars.Remove(car);
-            _dbContext.SaveChanges();
+            var car = await GetCar(id);
+            await Task.Run(() => _dbContext.Cars.Remove(car));
+            await _dbContext.SaveChangesAsync();
         }
 
-        private Car GetCar(int id)
+        private async Task<Car> GetCar(int id)
         {
-            var car = _dbContext.Cars
+            var car = await _dbContext.Cars
                 .Include(x => x.Price)
-                .FirstOrDefault(c => c.Id == id);
+                .FirstOrDefaultAsync(c => c.Id == id);
 
             if (car is null)
             {

@@ -4,10 +4,10 @@ namespace CarRentalAPI.Services.Interfaces
 {
     public interface ICarService
     {
-        IEnumerable<CarDto> GetAll();
-        CarDto GetById(int id);
-        int Add(AddCarDto addCarDto);
-        void UpdateById(int id, UpdateCarDto carDto);
-        void DeleteById(int id);
+        Task<IEnumerable<CarDto>> GetAll();
+        Task<CarDto> GetById(int id);
+        Task<int> Add(AddCarDto addCarDto);
+        Task UpdateById(int id, UpdateCarDto carDto);
+        Task DeleteById(int id);
     }
 }

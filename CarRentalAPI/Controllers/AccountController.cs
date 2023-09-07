@@ -16,16 +16,16 @@ namespace CarRentalAPI.Controllers
         }
 
         [HttpPost("register")]
-        public ActionResult RegisterUser([FromBody] RegisterUserDto dto)
+        public async Task<ActionResult> RegisterUser([FromBody] RegisterUserDto dto)
         {
-            _service.RegisterUser(dto);
+            await _service.RegisterUser(dto);
             return Ok();
         }
 
         [HttpPost("login")]
-        public ActionResult Login([FromBody] LoginDto login)
+        public async Task<ActionResult> Login([FromBody] LoginDto login)
         {
-            string token = _service.GenerateJwt(login);
+            string token = await _service.GenerateJwt(login);
             return Ok(token);
         }
     }

@@ -4,10 +4,10 @@ namespace CarRentalAPI.Services.Interfaces
 {
     public interface IOrderService
     {
-        List<OrderDto> GetAllOrders();
-        OrderDto GetOrderById(int orderId);
-        int CreateOrder(CreateOrderDto orderDto);
-        void UpdateById(int orderId, UpdateOrderDto updateOrderDto);
-        void DeleteById(int orderId);
+        Task<List<OrderDto>> GetAllOrders();
+        Task<OrderDto> GetOrderById(int orderId);
+        Task<int> CreateOrder(CreateOrderDto orderDto);
+        Task UpdateById(int orderId, UpdateOrderDto updateOrderDto);
+        Task DeleteById(int orderId);
     }
 }

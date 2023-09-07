@@ -1,5 +1,6 @@
 ﻿using CarRentalAPI.Entities;
 using Humanizer;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarRentalAPI
 {
@@ -12,22 +13,22 @@ namespace CarRentalAPI
             _dbContext = dbContext;
         }
 
-        public void Seed()
+        public async Task Seed()
         {
-            if (_dbContext.Database.CanConnect())
+            if (await _dbContext.Database.CanConnectAsync())
             {
-                if (!_dbContext.Cars.Any())
+                if (!await _dbContext.Cars.AnyAsync())
                 {
                     var cars = GetCars();
-                    _dbContext.Cars.AddRange(cars);
-                    _dbContext.SaveChanges();
+                    await _dbContext.Cars.AddRangeAsync(cars);
+                    await _dbContext.SaveChangesAsync();
                 }
 
-                if (!_dbContext.Roles.Any())
+                if (!await _dbContext.Roles.AnyAsync())
                 {
                     var roles = GetRoles();
-                    _dbContext.Roles.AddRange(roles);
-                    _dbContext.SaveChanges();
+                    await _dbContext.Roles.AddRangeAsync(roles);
+                    await _dbContext.SaveChangesAsync();
                 }
             }
         }

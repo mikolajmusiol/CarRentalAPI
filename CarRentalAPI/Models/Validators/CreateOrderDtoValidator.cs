@@ -1,5 +1,6 @@
 ﻿using CarRentalAPI.Entities;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarRentalAPI.Models.Validators
 {
@@ -8,14 +9,14 @@ namespace CarRentalAPI.Models.Validators
         public CreateOrderDtoValidator(CarRentalDbContext dbContext)
         {
             RuleFor(x => new { x.CarId, x.RentalFrom, x.RentalTo })
-                .Custom((value, context) =>
+                .Custom(async (value, context) =>
                 {
                     if (value.RentalFrom > value.RentalTo)
                     {
                         context.AddFailure("Incorrectly selected rental period");
                     }
 
-                    var order = dbContext.Orders.FirstOrDefault(u => u.CarId == value.CarId);
+                    var order = await dbContext.Orders.FirstOrDefaultAsync(u => u.CarId == value.CarId);
 
                     if (order != null)
                     {

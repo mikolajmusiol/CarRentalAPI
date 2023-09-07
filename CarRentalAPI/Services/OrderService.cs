@@ -25,14 +25,14 @@ namespace CarRentalAPI.Services
             _userContextService = userContextService;
         }
 
-        public List<OrderDto> GetAllOrders()
+        public async Task<List<OrderDto>> GetAllOrders()
         {
-            var orders = _dbContext.Orders
+            var orders = await _dbContext.Orders
                 .Include(x => x.CreatedBy)
                 .Include(x => x.Car)
                 .Include(x => x.Car.Price)
                 .Where(x => x.CreatedById == _userContextService.GetUserId)
-                .ToList();
+                .ToListAsync();
 
             if (orders.Count == 0)
                 throw new NotFoundException("No orders found");
@@ -40,16 +40,16 @@ namespace CarRentalAPI.Services
             return _mapper.Map<List<OrderDto>>(orders);
         }
 
-        public OrderDto GetOrderById(int orderId)
+        public async Task<OrderDto> GetOrderById(int orderId)
         {
-            var order = GetOrder(orderId);
+            var order = await GetOrder(orderId);
 
             return _mapper.Map<OrderDto>(order);
         }
 
-        public int CreateOrder(CreateOrderDto createOrderDto)
+        public async Task<int> CreateOrder(CreateOrderDto createOrderDto)
         {
-            var user = _dbContext.Users.FirstOrDefault(c => c.Id == _userContextService.GetUserId);
+            var user = await _dbContext.Users.FirstOrDefaultAsync(c => c.Id == _userContextService.GetUserId);
 
             if (user is null)
             {
@@ -57,9 +57,9 @@ namespace CarRentalAPI.Services
                 throw new NotFoundException("Client not found");
             }
 
-            var car = _dbContext.Cars
+            var car = await _dbContext.Cars
                 .Include(x => x.Price)
-                .FirstOrDefault(n => n.Id == createOrderDto.CarId);
+                .FirstOrDefaultAsync(n => n.Id == createOrderDto.CarId);
 
             if (car is null)
             {
@@ -77,19 +77,19 @@ namespace CarRentalAPI.Services
 
             order.Value = _orderValueCalculator.CalculateOrderValue(order, car.Price);
 
-            _dbContext.Orders.Add(order);
-            _dbContext.SaveChanges();
+            await _dbContext.Orders.AddAsync(order);
+            await _dbContext.SaveChangesAsync();
 
             return order.Id;
         }
 
-        public void UpdateById(int orderId, UpdateOrderDto updateOrderDto)
+        public async Task UpdateById(int orderId, UpdateOrderDto updateOrderDto)
         {
-            var order = GetOrder(orderId);
+            var order = await GetOrder(orderId);
 
             if (updateOrderDto.CarId != null)
             {
-                var car = GetCar(updateOrderDto.CarId.Value);
+                var car = await GetCar(updateOrderDto.CarId.Value);
                 order.Car = car ?? order.Car;
             }
 
@@ -99,30 +99,31 @@ namespace CarRentalAPI.Services
             order.Value = _orderValueCalculator.CalculateOrderValue(order, order.Car.Price);
 
             _logger.LogInformation("Order updated");
-            _dbContext.Orders.Update(order);
-            _dbContext.SaveChanges();
+
+            await Task.Run(() => _dbContext.Orders.Update(order));
+            await _dbContext.SaveChangesAsync();
         }
 
-        public void DeleteById(int orderId)
+        public async Task DeleteById(int orderId)
         {
-            var order = GetOrder(orderId);
+            var order = await GetOrder(orderId);
 
             if (DateTime.Now > order.RentalFrom)
             {
                 throw new BadRequestException("You cannot delete an order that has already started");
             }
 
-            _dbContext.Orders.Remove(order);
-            _dbContext.SaveChanges();
+            await Task.Run(() => _dbContext.Orders.Remove(order));
+            await _dbContext.SaveChangesAsync();
         }
 
-        private Order GetOrder(int orderId)
+        private async Task<Order> GetOrder(int orderId)
         {
-            var order = _dbContext.Orders
+            var order = await _dbContext.Orders
                 .Include(x => x.CreatedBy)
                 .Include(x => x.Car)
                 .Include(x => x.Car.Price)
-                .FirstOrDefault(x => x.Id == orderId && x.CreatedById == _userContextService.GetUserId);
+                .FirstOrDefaultAsync(x => x.Id == orderId && x.CreatedById == _userContextService.GetUserId);
 
             if (order is null)
             {
@@ -133,11 +134,11 @@ namespace CarRentalAPI.Services
             return order;
         }
 
-        private Car GetCar(int carId)
+        private async Task<Car> GetCar(int carId)
         {
-            var car = _dbContext.Cars
+            var car = await _dbContext.Cars
                .Include(x => x.Price)
-               .FirstOrDefault(c => c.Id == carId);
+               .FirstOrDefaultAsync(c => c.Id == carId);
 
             if (car is null)
             {
