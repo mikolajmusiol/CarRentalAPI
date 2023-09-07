@@ -105,6 +105,11 @@ namespace CarRentalAPI.Services
         {
             var order = GetOrder(accountId, orderId);
 
+            if (DateTime.Now > order.RentalFrom)
+            {
+                throw new BadRequestException("You cannot delete an order that has already started");
+            }
+
             _dbContext.Orders.Remove(order);
             _dbContext.SaveChanges();
         }

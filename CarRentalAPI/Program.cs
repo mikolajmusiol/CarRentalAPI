@@ -1,4 +1,6 @@
 using CarRentalAPI;
+using CarRentalAPI.Authorization;
+using CarRentalAPI.Authorization.Handlers;
 using CarRentalAPI.Entities;
 using CarRentalAPI.MIddleware;
 using CarRentalAPI.Models;
@@ -9,6 +11,7 @@ using CarRentalAPI.Utilities;
 using CarRentalAPI.Utilities.Interfaces;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -43,6 +46,13 @@ builder.Services.AddAuthentication(option =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authSettings.JwtKey)),
     };
 });
+
+builder.Services.AddAuthorization(option =>
+{
+    option.AddPolicy("IsAdult", builder => builder.AddRequirements(new IsAdultRequirement()));
+});
+
+builder.Services.AddScoped<IAuthorizationHandler, IsAdultRequirementHandler>();
 
 builder.Services.AddControllers();
 

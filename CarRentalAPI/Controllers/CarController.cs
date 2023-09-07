@@ -1,11 +1,13 @@
 ﻿using CarRentalAPI.Models;
 using CarRentalAPI.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarRentalAPI.Controllers
 {
     [Route("api/cars")]
     [ApiController]
+    [Authorize(Roles = "Employee, Admin")]
     public class CarController : ControllerBase
     {
         private readonly ICarService _carService;
@@ -16,6 +18,7 @@ namespace CarRentalAPI.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult<List<CarDto>> GetAllCars()
         {
             var carsDtos = _carService.GetAll();
@@ -23,6 +26,7 @@ namespace CarRentalAPI.Controllers
         }
 
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public ActionResult<CarDto> GetCar([FromRoute] int id)
         {
             var carDto = _carService.GetById(id);

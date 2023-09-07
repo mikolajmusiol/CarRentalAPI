@@ -10,6 +10,11 @@ namespace CarRentalAPI.Models.Validators
             RuleFor(x => new { x.CarId, x.RentalFrom, x.RentalTo })
                 .Custom((value, context) =>
                 {
+                    if (value.RentalFrom > value.RentalTo)
+                    {
+                        context.AddFailure("Incorrectly selected rental period");
+                    }
+
                     var order = dbContext.Orders.FirstOrDefault(u => u.CarId == value.CarId);
 
                     if (order != null)

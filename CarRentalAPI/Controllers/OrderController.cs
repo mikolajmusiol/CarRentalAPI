@@ -1,12 +1,14 @@
 ﻿using CarRentalAPI.Models;
 using CarRentalAPI.Services;
 using CarRentalAPI.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarRentalAPI.Controllers
 {
     [Route("api/account/{accountId}/orders")]
     [ApiController]
+    [Authorize]
     public class OrderController : ControllerBase
     {
         private readonly IOrderService _orderService;
@@ -31,6 +33,7 @@ namespace CarRentalAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "IsAdult")]
         public ActionResult CreateOrder([FromRoute] int accountId, [FromBody] CreateOrderDto orderDto)
         {
             int id = _orderService.CreateOrder(accountId, orderDto);

@@ -30,6 +30,9 @@ namespace CarRentalAPI.Models.Validators
                     }
                 });
 
+            RuleFor(x => x.DateOfBirth)
+                .NotEmpty();
+
             RuleFor(x => x.PostalCode)
                 .MaximumLength(6)
                 .Matches(@"\d\d-\d{3}");
