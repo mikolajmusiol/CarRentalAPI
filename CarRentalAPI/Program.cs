@@ -73,6 +73,8 @@ builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddScoped<IValidator<RegisterUserDto>, RegisterUserDtoValidator>();
 builder.Services.AddScoped<IValidator<CreateOrderDto>, CreateOrderDtoValidator>();
 
+builder.Services.AddScoped<IUserContextService, UserContextService>();
+
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options =>
 {

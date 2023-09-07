@@ -14,22 +14,24 @@ namespace CarRentalAPI.Services
         private readonly IMapper _mapper;
         private readonly ILogger<OrderService> _logger;
         private readonly IOrderValueCalculator _orderValueCalculator;
+        private readonly IUserContextService _userContextService;
 
-        public OrderService(CarRentalDbContext dbContext, IMapper mapper, ILogger<OrderService> logger, IOrderValueCalculator orderValueCalculator)
+        public OrderService(CarRentalDbContext dbContext, IMapper mapper, ILogger<OrderService> logger, IOrderValueCalculator orderValueCalculator, IUserContextService userContextService)
         {
             _dbContext = dbContext;
             _mapper = mapper;
             _logger = logger;
             _orderValueCalculator = orderValueCalculator;
+            _userContextService = userContextService;
         }
 
-        public List<OrderDto> GetAllOrders(int accountId)
+        public List<OrderDto> GetAllOrders()
         {
             var orders = _dbContext.Orders
                 .Include(x => x.CreatedBy)
                 .Include(x => x.Car)
                 .Include(x => x.Car.Price)
-                .Where(x => x.CreatedById == accountId)
+                .Where(x => x.CreatedById == _userContextService.GetUserId)
                 .ToList();
 
             if (orders.Count == 0)
@@ -38,16 +40,16 @@ namespace CarRentalAPI.Services
             return _mapper.Map<List<OrderDto>>(orders);
         }
 
-        public OrderDto GetOrderById(int accountId, int orderId)
+        public OrderDto GetOrderById(int orderId)
         {
-            var order = GetOrder(accountId, orderId);
+            var order = GetOrder(orderId);
 
             return _mapper.Map<OrderDto>(order);
         }
 
-        public int CreateOrder(int accountId, CreateOrderDto createOrderDto)
+        public int CreateOrder(CreateOrderDto createOrderDto)
         {
-            var user = _dbContext.Users.FirstOrDefault(c => c.Id == accountId);
+            var user = _dbContext.Users.FirstOrDefault(c => c.Id == _userContextService.GetUserId);
 
             if (user is null)
             {
@@ -81,9 +83,9 @@ namespace CarRentalAPI.Services
             return order.Id;
         }
 
-        public void UpdateById(int accountId, int orderId, UpdateOrderDto updateOrderDto)
+        public void UpdateById(int orderId, UpdateOrderDto updateOrderDto)
         {
-            var order = GetOrder(accountId, orderId);
+            var order = GetOrder(orderId);
 
             if (updateOrderDto.CarId != null)
             {
@@ -101,9 +103,9 @@ namespace CarRentalAPI.Services
             _dbContext.SaveChanges();
         }
 
-        public void DeleteById(int accountId, int orderId)
+        public void DeleteById(int orderId)
         {
-            var order = GetOrder(accountId, orderId);
+            var order = GetOrder(orderId);
 
             if (DateTime.Now > order.RentalFrom)
             {
@@ -114,13 +116,13 @@ namespace CarRentalAPI.Services
             _dbContext.SaveChanges();
         }
 
-        private Order GetOrder(int accountId, int orderId)
+        private Order GetOrder(int orderId)
         {
             var order = _dbContext.Orders
                 .Include(x => x.CreatedBy)
                 .Include(x => x.Car)
                 .Include(x => x.Car.Price)
-                .FirstOrDefault(x => x.Id == orderId && x.CreatedById == accountId);
+                .FirstOrDefault(x => x.Id == orderId && x.CreatedById == _userContextService.GetUserId);
 
             if (order is null)
             {

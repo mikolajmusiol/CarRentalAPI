@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CarRentalAPI.Controllers
 {
-    [Route("api/account/{accountId}/orders")]
+    [Route("api/orders")]
     [ApiController]
     [Authorize]
     public class OrderController : ControllerBase
@@ -19,38 +19,38 @@ namespace CarRentalAPI.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<OrderDto>> GetAllOrders([FromRoute] int accountId)
+        public ActionResult<List<OrderDto>> GetAllOrders()
         {
-            List<OrderDto> orderDtos = _orderService.GetAllOrders(accountId);
+            List<OrderDto> orderDtos = _orderService.GetAllOrders();
             return Ok(orderDtos);
         }
 
         [HttpGet("{orderId}")]
-        public ActionResult<OrderDto> GetOrder([FromRoute] int accountId, [FromRoute] int orderId)
+        public ActionResult<OrderDto> GetOrder([FromRoute] int orderId)
         {
-            var orderDto = _orderService.GetOrderById(accountId, orderId);
+            var orderDto = _orderService.GetOrderById(orderId);
             return Ok(orderDto);
         }
 
         [HttpPost]
         [Authorize(Policy = "IsAdult")]
-        public ActionResult CreateOrder([FromRoute] int accountId, [FromBody] CreateOrderDto orderDto)
+        public ActionResult CreateOrder([FromBody] CreateOrderDto orderDto)
         {
-            int id = _orderService.CreateOrder(accountId, orderDto);
+            int id = _orderService.CreateOrder(orderDto);
             return Created($"api/orders/{id}", null);
         }
 
         [HttpPut("{orderId}")]
-        public ActionResult UpdateOrder([FromRoute] int accountId, [FromRoute] int orderId, [FromBody] UpdateOrderDto updateOrderDto)
+        public ActionResult UpdateOrder([FromRoute] int orderId, [FromBody] UpdateOrderDto updateOrderDto)
         {
-            _orderService.UpdateById(accountId, orderId, updateOrderDto);
+            _orderService.UpdateById(orderId, updateOrderDto);
             return Ok();
         }
 
         [HttpDelete("{orderId}")]
-        public ActionResult DeleteOrder([FromRoute] int accountId, [FromRoute] int orderId)
+        public ActionResult DeleteOrder([FromRoute] int orderId)
         {
-            _orderService.DeleteById(accountId, orderId);
+            _orderService.DeleteById(orderId);
             return NoContent();
         }
     }
