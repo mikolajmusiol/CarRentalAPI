@@ -1,7 +1,7 @@
 ﻿using CarRentalAPI.Entities;
 using System.Text.Json.Serialization;
 
-namespace CarRentalAPI.Models
+namespace CarRentalAPI.Models.Dtos
 {
     public class CarDto
     {

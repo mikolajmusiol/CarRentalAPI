@@ -1,4 +1,5 @@
 ﻿using CarRentalAPI.Models;
+using CarRentalAPI.Models.Dtos;
 using CarRentalAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,9 +20,9 @@ namespace CarRentalAPI.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<ActionResult<List<CarDto>>> GetAllCars()
+        public async Task<ActionResult<PagedResult<CarDto>>> GetAllCars([FromQuery] QueryModel query)
         {
-            var carsDtos = await _carService.GetAll();
+            var carsDtos = await _carService.GetAll(query);
             return Ok(carsDtos);
         }
 

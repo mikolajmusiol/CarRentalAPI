@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CarRentalAPI.Models
+namespace CarRentalAPI.Models.Dtos
 {
     public class LoginDto
     {

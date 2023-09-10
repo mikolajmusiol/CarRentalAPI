@@ -1,6 +1,7 @@
 ﻿using CarRentalAPI.Entities;
 using CarRentalAPI.Exceptions;
 using CarRentalAPI.Models;
+using CarRentalAPI.Models.Dtos;
 using CarRentalAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

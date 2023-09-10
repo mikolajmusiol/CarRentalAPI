@@ -1,4 +1,4 @@
-﻿using CarRentalAPI.Models;
+﻿using CarRentalAPI.Models.Dtos;
 
 namespace CarRentalAPI.Services.Interfaces
 {

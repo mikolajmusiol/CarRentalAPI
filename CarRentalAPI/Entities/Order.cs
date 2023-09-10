@@ -1,4 +1,6 @@
-﻿namespace CarRentalAPI.Entities
+﻿using CarRentalAPI.Exceptions;
+
+namespace CarRentalAPI.Entities
 {
     public class Order
     {

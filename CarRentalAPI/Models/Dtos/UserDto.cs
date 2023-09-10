@@ -1,4 +1,4 @@
-﻿namespace CarRentalAPI.Models
+﻿namespace CarRentalAPI.Models.Dtos
 {
     public class UserDto
     {

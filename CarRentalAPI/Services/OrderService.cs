@@ -2,9 +2,12 @@
 using CarRentalAPI.Entities;
 using CarRentalAPI.Exceptions;
 using CarRentalAPI.Models;
+using CarRentalAPI.Models.Dtos;
 using CarRentalAPI.Services.Interfaces;
 using CarRentalAPI.Utilities.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace CarRentalAPI.Services
 {
@@ -25,19 +28,43 @@ namespace CarRentalAPI.Services
             _userContextService = userContextService;
         }
 
-        public async Task<List<OrderDto>> GetAllOrders()
+        public async Task<PagedResult<OrderDto>> GetAllOrders(QueryModel query)
         {
-            var orders = await _dbContext.Orders
+            var baseQuery = _dbContext.Orders
                 .Include(x => x.CreatedBy)
                 .Include(x => x.Car)
                 .Include(x => x.Car.Price)
-                .Where(x => x.CreatedById == _userContextService.GetUserId)
-                .ToListAsync();
+                .Where(x => x.CreatedById == _userContextService.GetUserId
+                && (query.SearchPhrase == null
+                || x.Car.Brand.ToLower().Contains(query.SearchPhrase.ToLower())
+                || x.Car.Model.ToLower().Contains(query.SearchPhrase.ToLower())));
 
-            if (orders.Count == 0)
-                throw new NotFoundException("No orders found");
+            if (!string.IsNullOrEmpty(query.SortBy))
+            {
+                var columnSelector = new Dictionary<string, Expression<Func<Order, object>>>()
+                {
+                    {nameof(Order.RentalFrom), x => x.RentalFrom },
+                    {nameof(Order.RentalTo), x => x.RentalTo },
+                    {nameof(Order.Value), x => x.Value }
+                };
 
-            return _mapper.Map<List<OrderDto>>(orders);
+                var selectedColumn = columnSelector[query.SortBy];
+
+                baseQuery = query.SortDirection == SortDirection.Ascending
+                    ? baseQuery.OrderBy(selectedColumn)
+                    : baseQuery.OrderByDescending(selectedColumn);
+            }
+
+            var orders = await baseQuery
+               .Skip(query.PageSize * (query.PageNumber - 1))
+               .Take(query.PageSize)
+               .ToListAsync();
+
+            var ordersDtos = _mapper.Map<List<OrderDto>>(orders);
+
+            var pagedResult = new PagedResult<OrderDto>(ordersDtos, baseQuery.Count(), query.PageSize, query.PageNumber);
+
+            return pagedResult;
         }
 
         public async Task<OrderDto> GetOrderById(int orderId)
@@ -100,7 +127,7 @@ namespace CarRentalAPI.Services
 
             _logger.LogInformation("Order updated");
 
-            await Task.Run(() => _dbContext.Orders.Update(order));
+            _dbContext.Orders.Update(order);
             await _dbContext.SaveChangesAsync();
         }
 
@@ -113,7 +140,7 @@ namespace CarRentalAPI.Services
                 throw new BadRequestException("You cannot delete an order that has already started");
             }
 
-            await Task.Run(() => _dbContext.Orders.Remove(order));
+            _dbContext.Orders.Remove(order);
             await _dbContext.SaveChangesAsync();
         }
 

@@ -1,4 +1,4 @@
-﻿using CarRentalAPI.Models;
+﻿using CarRentalAPI.Models.Dtos;
 using CarRentalAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 

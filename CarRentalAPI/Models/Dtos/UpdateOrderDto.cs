@@ -1,6 +1,6 @@
 ﻿using CarRentalAPI.Entities;
 
-namespace CarRentalAPI.Models
+namespace CarRentalAPI.Models.Dtos
 {
     public class UpdateOrderDto
     {

@@ -1,4 +1,4 @@
-﻿namespace CarRentalAPI;
+﻿namespace CarRentalAPI.Models;
 
 public class AuthenticationSettings
 {

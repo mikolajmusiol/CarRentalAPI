@@ -2,8 +2,10 @@
 using CarRentalAPI.Entities;
 using CarRentalAPI.Exceptions;
 using CarRentalAPI.Models;
+using CarRentalAPI.Models.Dtos;
 using CarRentalAPI.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace CarRentalAPI.Services
 {
@@ -20,13 +22,42 @@ namespace CarRentalAPI.Services
             _logger = logger;
         }
 
-        public async Task<IEnumerable<CarDto>> GetAll()
+        public async Task<PagedResult<CarDto>> GetAll(QueryModel query)
         {
-            var cars = await _dbContext.Cars
+            var baseQuery = _dbContext.Cars
                 .Include(x => x.Price)
+                .Where(x => query.SearchPhrase == null
+                || x.Brand.ToLower().Contains(query.SearchPhrase.ToLower())
+                || x.Model.ToLower().Contains(query.SearchPhrase.ToLower()));
+
+            if (!string.IsNullOrEmpty(query.SortBy))
+            {
+                var columnSelector = new Dictionary<string, Expression<Func<Car, object>>>()
+                {
+                    {nameof(Car.Brand), x => x.Brand },
+                    {nameof(Car.Model), x => x.Model },
+                    {nameof(Car.Price.PriceForAnHour), x => x.Price.PriceForAnHour.GetValueOrDefault() },
+                    {nameof(Car.Price.PriceForADay), x => x.Price.PriceForADay.GetValueOrDefault() },
+                    {nameof(Car.Price.PriceForAWeek), x => x.Price.PriceForAWeek.GetValueOrDefault() }
+                };
+
+                var selectedColumn = columnSelector[query.SortBy];
+
+                baseQuery = query.SortDirection == SortDirection.Ascending
+                    ? baseQuery.OrderBy(selectedColumn)
+                    : baseQuery.OrderByDescending(selectedColumn);
+            }
+
+            var cars = await baseQuery
+                .Skip(query.PageSize * (query.PageNumber - 1))
+                .Take(query.PageSize)
                 .ToListAsync();
 
-            return _mapper.Map<List<CarDto>>(cars); ;
+            var carsDtos = _mapper.Map<List<CarDto>>(cars);
+
+            var pagedResult = new PagedResult<CarDto>(carsDtos, baseQuery.Count(), query.PageSize, query.PageNumber);
+
+            return pagedResult; 
         }
 
         public async Task<CarDto> GetById(int id)
@@ -60,14 +91,14 @@ namespace CarRentalAPI.Services
                 car.Price.PriceForAWeek = carDto.Price.PriceForAWeek ?? car.Price.PriceForAWeek;
             }
 
-            await Task.Run(() => _dbContext.Cars.Update(car));
+            _dbContext.Cars.Update(car);
             await _dbContext.SaveChangesAsync();
         }
 
         public async Task DeleteById(int id)
         {
             var car = await GetCar(id);
-            await Task.Run(() => _dbContext.Cars.Remove(car));
+            _dbContext.Cars.Remove(car);
             await _dbContext.SaveChangesAsync();
         }
 
