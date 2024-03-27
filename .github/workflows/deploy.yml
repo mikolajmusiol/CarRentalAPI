@@ -18,7 +18,26 @@ jobs:
         run: dotnet build --no-restore
       - name: Publish
         run: dotnet publish ./CarRentalAPI/CarRentalAPI.csproj -c Release -o ${{ env.DOTNET_ROOT }}/api
+      - name: upload artifact
+        uses: actions/upload-artifact@v4.3.1
+        with:
+          name: api-artifact
+          path: ${{ env.DOTNET_ROOT }}/api
 
   deploy-dev:
     runs-on: ubuntu-latest
     needs: build
+    environment: 
+      name: 'Dev'
+      url: ${{ steps.deploy-to-azure.outputs.webapp-url }}
+    steps:
+      - name: Download a Build Artifact
+        uses: actions/download-artifact@v4.1.4
+        with:
+          name: api-artifact
+      - name: Azure WebApp
+        id: deploy-to-azure
+        uses: Azure/webapps-deploy@v3.0.0
+        with:
+          app-name: 'car-rental-api'
+          publish-profile: ${{ secrets.PUBLISH_PROFILE }}
