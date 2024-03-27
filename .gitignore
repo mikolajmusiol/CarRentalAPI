@@ -104,7 +104,10 @@ DocProject/Help/html
 publish/
 
 # Publish Web Output
-*.Publish.xml
+*.[Pp]ublish.xml
+*.azurePubxml
+*.pubxml
+*.publishproj
 
 # Windows Azure Build Output
 csx

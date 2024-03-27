@@ -17,6 +17,13 @@ namespace CarRentalAPI
         {
             if (await _dbContext.Database.CanConnectAsync())
             {
+                var pendingMigrations = _dbContext.Database.GetPendingMigrations();
+
+                if (pendingMigrations != null && pendingMigrations.Any())
+                {
+                    _dbContext.Database.Migrate();
+                }
+
                 if (!await _dbContext.Cars.AnyAsync())
                 {
                     var cars = GetCars();
