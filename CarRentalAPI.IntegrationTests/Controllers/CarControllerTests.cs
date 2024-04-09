@@ -49,6 +49,7 @@ namespace CarRentalAPI.IntegrationTests.Controllers
         [JsonData<int>(CAR_CONTROLLER_TEST_FOLDER + "GetCarTestData.json", "ValidInput")]
         public async Task GetCar_ForValidModel_ReturnsOk(int id)
         {
+            SeedCars();
             var response = await _client.GetAsync("api/cars/" + id);
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
         }
@@ -57,9 +58,37 @@ namespace CarRentalAPI.IntegrationTests.Controllers
         [JsonData<int>(CAR_CONTROLLER_TEST_FOLDER + "GetCarTestData.json", "InvalidInput")]
         public async Task GetCar_ForInvalidModel_ReturnsNotFound(int id)
         {
+            SeedCars();
             var response = await _client.GetAsync("api/cars/" + id);
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
         }
 
+        private void SeedCars()
+        {
+            var scopeFactory = _factory.Services.GetService<IServiceScopeFactory>();
+            using var scope = scopeFactory.CreateScope();
+            var dbContext = scope.ServiceProvider.GetService<CarRentalDbContext>();
+            if (!dbContext.Cars.Any())
+            {
+                var car = new Car()
+                {
+                    Id = 1,
+                    Brand = "Skoda",
+                    Model = "Fabia I",
+                    YearOfProduction = 2003,
+                    Color = "Red",
+                    HorsePower = 60,
+                    Description = null,
+                    Price = new Price()
+                    {
+                        PriceForAnHour = 60,
+                        PriceForADay = 500,
+                        PriceForAWeek = 3000
+                    }
+                };
+                dbContext.Cars.Add(car);
+                dbContext.SaveChanges();
+            }
+        }
     }
 }
