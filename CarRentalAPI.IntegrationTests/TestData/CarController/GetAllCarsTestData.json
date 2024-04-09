@@ -1,0 +1,42 @@
+{
+  "ValidInput": [
+    {
+      "SearchPhrase": "Skoda",
+      "PageNumber": 1,
+      "PageSize": 5,
+      "SortBy": "Model",
+      "SortDirection": "Ascending"
+    },
+    {
+      "SearchPhrase": "Opel",
+      "PageNumber": 1,
+      "PageSize": 5,
+      "SortBy": "Brand",
+      "SortDirection": "Descending"
+    }
+  ],
+
+  "InvalidInput": [
+    {
+      "SearchPhrase": "Skoda",
+      "PageNumber": 1,
+      "PageSize": 9,
+      "SortBy": "Color",
+      "SortDirection": "Ascending"
+    },
+    {
+      "SearchPhrase": "",
+      "PageNumber": 1,
+      "PageSize": 5,
+      "SortBy": "Model",
+      "SortDirection": "Ascending"
+    },
+    {
+      "SearchPhrase": "",
+      "PageNumber": 1,
+      "PageSize": 5,
+      "SortBy": "Model",
+      "SortDirection": "xxx"
+    }
+  ]
+}
