@@ -5,6 +5,10 @@ VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarRentalAPI", "CarRentalAPI\CarRentalAPI.csproj", "{37481B7C-4B73-495D-9DF1-8105237529C4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarRentalAPI.UnitTests", "CarRentalAPI.UnitTests\CarRentalAPI.UnitTests.csproj", "{579A781E-292D-4C23-ADD6-F82A7ED2989F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarRentalAPI.IntegrationTests", "CarRentalAPI.IntegrationTests\CarRentalAPI.IntegrationTests.csproj", "{A2531FBB-A460-4999-B6F7-607F9955181C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{37481B7C-4B73-495D-9DF1-8105237529C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37481B7C-4B73-495D-9DF1-8105237529C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37481B7C-4B73-495D-9DF1-8105237529C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{579A781E-292D-4C23-ADD6-F82A7ED2989F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{579A781E-292D-4C23-ADD6-F82A7ED2989F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{579A781E-292D-4C23-ADD6-F82A7ED2989F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{579A781E-292D-4C23-ADD6-F82A7ED2989F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2531FBB-A460-4999-B6F7-607F9955181C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2531FBB-A460-4999-B6F7-607F9955181C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2531FBB-A460-4999-B6F7-607F9955181C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2531FBB-A460-4999-B6F7-607F9955181C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
