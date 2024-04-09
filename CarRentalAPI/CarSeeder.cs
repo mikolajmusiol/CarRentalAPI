@@ -17,25 +17,28 @@ namespace CarRentalAPI
         {
             if (await _dbContext.Database.CanConnectAsync())
             {
-                var pendingMigrations = _dbContext.Database.GetPendingMigrations();
-
-                if (pendingMigrations != null && pendingMigrations.Any())
+                if (_dbContext.Database.IsRelational())
                 {
-                    _dbContext.Database.Migrate();
-                }
+                    var pendingMigrations = _dbContext.Database.GetPendingMigrations();
 
-                if (!await _dbContext.Cars.AnyAsync())
-                {
-                    var cars = GetCars();
-                    await _dbContext.Cars.AddRangeAsync(cars);
-                    await _dbContext.SaveChangesAsync();
-                }
+                    if (pendingMigrations != null && pendingMigrations.Any())
+                    {
+                        _dbContext.Database.Migrate();
+                    }
 
-                if (!await _dbContext.Roles.AnyAsync())
-                {
-                    var roles = GetRoles();
-                    await _dbContext.Roles.AddRangeAsync(roles);
-                    await _dbContext.SaveChangesAsync();
+                    if (!await _dbContext.Cars.AnyAsync())
+                    {
+                        var cars = GetCars();
+                        await _dbContext.Cars.AddRangeAsync(cars);
+                        await _dbContext.SaveChangesAsync();
+                    }
+
+                    if (!await _dbContext.Roles.AnyAsync())
+                    {
+                        var roles = GetRoles();
+                        await _dbContext.Roles.AddRangeAsync(roles);
+                        await _dbContext.SaveChangesAsync();
+                    }
                 }
             }
         }
