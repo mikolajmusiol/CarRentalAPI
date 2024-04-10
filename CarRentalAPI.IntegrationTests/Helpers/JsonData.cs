@@ -23,19 +23,20 @@ namespace CarRentalAPI.IntegrationTests.Helpers
 
             var jsonFile = GetJsonFromFile();
             var jsonData = GetJsonDataByProperty(jsonFile);
-            return ParseJson(jsonData);
+            return DeserializeJson(jsonData);
         }
 
-        private IEnumerable<object[]> ParseJson(string jsonData)
+        private IEnumerable<object[]> DeserializeJson(string jsonData)
         {
-            var genericObjectArray = JsonConvert.DeserializeObject<T[]>(jsonData);
-            if (genericObjectArray == null) throw new ArgumentNullException(nameof(genericObjectArray));
+            var testCases = JsonConvert.DeserializeObject<T[]>(jsonData);
+            if (testCases == null) throw new ArgumentNullException(nameof(testCases));
 
             List<object[]> data = new List<object[]>();
-            foreach (var obj in genericObjectArray)
+            foreach (var testCase in testCases)
             {
-                data.Add(new object[] { obj });
+                data.Add(new object[] { testCase });
             }
+
             return data;
         }
 

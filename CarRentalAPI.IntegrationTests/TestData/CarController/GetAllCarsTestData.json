@@ -1,42 +1,16 @@
 {
   "ValidInput": [
-    {
-      "SearchPhrase": "Skoda",
-      "PageNumber": 1,
-      "PageSize": 5,
-      "SortBy": "Model",
-      "SortDirection": "Ascending"
-    },
-    {
-      "SearchPhrase": "Opel",
-      "PageNumber": 1,
-      "PageSize": 5,
-      "SortBy": "Brand",
-      "SortDirection": "Descending"
-    }
+    "pageNumber=1&pageSize=5&sortBy=Brand&sortDirection=Ascending",
+    "searchPhrase=Skoda&pageNumber=2&pageSize=10&sortBy=Model&SortDirection=Ascending",
+    "searchPhrase=Skoda&pageNumber=3&pageSize=10&sortBy=PriceForADay&SortDirection=Ascending",
+    "searchPhrase=Audi&pageNumber=7&pageSize=15&sortDirection=Descending",
+    "pageNumber=3&pageSize=15&sortDirection=Descending"
   ],
 
   "InvalidInput": [
-    {
-      "SearchPhrase": "Skoda",
-      "PageNumber": 1,
-      "PageSize": 9,
-      "SortBy": "Color",
-      "SortDirection": "Ascending"
-    },
-    {
-      "SearchPhrase": "",
-      "PageNumber": 1,
-      "PageSize": 5,
-      "SortBy": "Model",
-      "SortDirection": "Ascending"
-    },
-    {
-      "SearchPhrase": "",
-      "PageNumber": 1,
-      "PageSize": 5,
-      "SortBy": "Model",
-      "SortDirection": "xxx"
-    }
+    "pageNumber=1&pageSize=12&sortBy=Brand&sortDirection=Ascending",
+    "pageNumber=-1&pageSize=5&sortBy=Brand&sortDirection=Ascending",
+    "pageNumber=1&pageSize=3&sortBy=Brand&sortDirection=Ascending",
+    "pageNumber=1&pageSize=5&sortBy=Color&sortDirection=Ascending"
   ]
 }

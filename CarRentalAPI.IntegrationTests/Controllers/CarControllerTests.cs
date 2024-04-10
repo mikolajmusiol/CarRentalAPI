@@ -37,16 +37,19 @@ namespace CarRentalAPI.IntegrationTests.Controllers
         }
 
         [Theory]
-        [JsonData<QueryModel>(CAR_CONTROLLER_TEST_FOLDER + "GetAllCarsTestData.json", "ValidInput")]
-        public async Task GetAllCars_ForValidModel_ReturnsOk(QueryModel query)
+        [JsonData<string>(CAR_CONTROLLER_TEST_FOLDER + "GetAllCarsTestData.json", "ValidInput")]
+        public async Task GetAllCars_ForValidModel_ReturnsOk(string query)
         {
-
+            var response = await _client.GetAsync("api/cars?" + query);
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
         }
-        [Theory]
-        [JsonData<QueryModel>(CAR_CONTROLLER_TEST_FOLDER + "GetAllCarsTestData.json", "InvalidInput")]
-        public async Task GetAllCars_ForInvalidModel_ReturnsBadRequest(QueryModel query)
-        {
 
+        [Theory]
+        [JsonData<string>(CAR_CONTROLLER_TEST_FOLDER + "GetAllCarsTestData.json", "InvalidInput")]
+        public async Task GetAllCars_ForInvalidModel_ReturnsBadRequest(string query)
+        {
+            var response = await _client.GetAsync("api/cars?" + query);
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
         }
 
         [Theory]

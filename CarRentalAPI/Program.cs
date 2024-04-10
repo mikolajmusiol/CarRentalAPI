@@ -73,6 +73,7 @@ builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
 builder.Services.AddScoped<IValidator<RegisterUserDto>, RegisterUserDtoValidator>();
 builder.Services.AddScoped<IValidator<CreateOrderDto>, CreateOrderDtoValidator>();
+builder.Services.AddScoped<IValidator<QueryModel>, QueryModelValidator>();
 
 builder.Services.AddScoped<IUserContextService, UserContextService>();
 
