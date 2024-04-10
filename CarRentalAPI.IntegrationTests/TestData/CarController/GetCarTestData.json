@@ -1,8 +1,4 @@
 {
-	"ValidInput": [
-		1
-	],
-
 	"InvalidInput": [
 		100000000,
 		0,

@@ -1,7 +1,9 @@
 ﻿using CarRentalAPI.Entities;
 using CarRentalAPI.IntegrationTests.Helpers;
 using CarRentalAPI.Models;
+using CarRentalAPI.Models.Dtos;
 using FluentAssertions;
+using Microsoft.AspNetCore.Authorization.Policy;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,6 +27,8 @@ namespace CarRentalAPI.IntegrationTests.Controllers
                     {
                         var dbContextOptions = services.SingleOrDefault(service => service.ServiceType == typeof(DbContextOptions<CarRentalDbContext>));
                         services.Remove(dbContextOptions);
+                        services.AddSingleton<IPolicyEvaluator, FakePolicyEvaluator>();
+                        services.AddMvc(option => option.Filters.Add(new FakeUserFilter()));
                         services.AddDbContext<CarRentalDbContext>(options => options.UseInMemoryDatabase("CarRentalDb"));
                     });
                 });
@@ -46,8 +50,8 @@ namespace CarRentalAPI.IntegrationTests.Controllers
         }
 
         [Theory]
-        [JsonData<int>(CAR_CONTROLLER_TEST_FOLDER + "GetCarTestData.json", "ValidInput")]
-        public async Task GetCar_ForValidModel_ReturnsOk(int id)
+        [InlineData(1)]
+        public async Task GetCar_ForValidId_ReturnsOk(int id)
         {
             SeedCars();
             var response = await _client.GetAsync("api/cars/" + id);
@@ -56,12 +60,26 @@ namespace CarRentalAPI.IntegrationTests.Controllers
 
         [Theory]
         [JsonData<int>(CAR_CONTROLLER_TEST_FOLDER + "GetCarTestData.json", "InvalidInput")]
-        public async Task GetCar_ForInvalidModel_ReturnsNotFound(int id)
+        public async Task GetCar_ForInvalidId_ReturnsNotFound(int id)
         {
             SeedCars();
             var response = await _client.GetAsync("api/cars/" + id);
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
         }
+
+        [Fact]
+        public async Task AddCar_ForValidModel_ReturnsCreated()
+        {
+            var model = new AddCarDto() { Brand = "Opel", Model = "Astra", Price = new Price() {} };
+            var httpContent = model.ToHttpContent();
+
+            var response = await _client.PostAsync("api/cars", httpContent);
+
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.Created);
+            response.Headers.Location.Should().NotBeNull();
+        }
+
+
 
         private void SeedCars()
         {
