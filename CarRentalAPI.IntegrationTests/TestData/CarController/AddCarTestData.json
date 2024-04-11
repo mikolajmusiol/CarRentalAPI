@@ -1,0 +1,22 @@
+{
+	"InvalidInput": [
+		{
+			"Brand": "Opel",
+			"Model": "Astra",
+			"Price": null
+		},
+		{
+			"Brand": null,
+			"Model": "Astra",
+			"Price": {
+			}
+		},
+		{
+			"Brand": "Opel",
+			"Model": null,
+			"Price": {
+			}
+		}
+
+	]
+}

@@ -2,7 +2,7 @@ using CarRentalAPI;
 using CarRentalAPI.Authorization;
 using CarRentalAPI.Authorization.Handlers;
 using CarRentalAPI.Entities;
-using CarRentalAPI.MIddleware;
+using CarRentalAPI.Middleware;
 using CarRentalAPI.Models;
 using CarRentalAPI.Models.Dtos;
 using CarRentalAPI.Models.Validators;

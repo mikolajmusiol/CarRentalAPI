@@ -1,7 +1,7 @@
 ﻿using CarRentalAPI.Exceptions;
 using Microsoft.AspNetCore.Http.HttpResults;
 
-namespace CarRentalAPI.MIddleware
+namespace CarRentalAPI.Middleware
 {
     public class ErrorHandlingMiddleware : IMiddleware
     {

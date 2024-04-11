@@ -1,5 +1,6 @@
 ﻿using CarRentalAPI.Entities;
 using CarRentalAPI.IntegrationTests.Helpers;
+using CarRentalAPI.IntegrationTests.TestData.CarController;
 using CarRentalAPI.Models;
 using CarRentalAPI.Models.Dtos;
 using FluentAssertions;
@@ -82,7 +83,45 @@ namespace CarRentalAPI.IntegrationTests.Controllers
             response.Headers.Location.Should().NotBeNull();
         }
 
+        [Theory]
+        [JsonData<AddCarDto>(CAR_CONTROLLER_TEST_FOLDER + "AddCarTestData.json", "InvalidInput")]
+        public async Task AddCar_ForInvalidModel_ReturnsBadRequest(AddCarDto dto)
+        {
+            var httpContent = dto.ToHttpContent();
 
+            var response = await _client.PostAsync("api/cars", httpContent);
+
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
+        }
+
+        [Theory]
+        [ClassData(typeof(UpdateCarValidTestData))]
+        public async Task UpdateCar_ForValidModel_ReturnsOk(int id, UpdateCarDto dto)
+        {
+            SeedCars();
+            var httpContent = dto.ToHttpContent();
+
+            var response = await _client.PutAsync("api/cars/" + id, httpContent);
+
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
+        }
+
+        [Fact]
+        public async Task Delete_ForNonExistingCar_ReturnsNotFound()
+        {
+            var response = await _client.DeleteAsync("/api/cars/100000");
+
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
+        }
+
+        [Fact]
+        public async Task Delete_ForExistingCar_ReturnsNoContent()
+        {
+            SeedCars();
+            var response = await _client.DeleteAsync("/api/cars/1");
+
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.NoContent);
+        }
 
         private void SeedCars()
         {
