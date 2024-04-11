@@ -1,0 +1,45 @@
+{
+  "InvalidInput": [
+    {
+      "Password": "password",
+      "ConfirmPassword": "password",
+      "DateOfBirth": "2024-12-12",
+      "FirstName": "test",
+      "LastName": "test",
+      "City": "test",
+      "Street": "test",
+      "PostalCode": "12-123"
+    },
+    {
+      "Email": "test@test.com",
+      "Password": "password",
+      "ConfirmPassword": "123",
+      "DateOfBirth": "2024-12-12",
+      "FirstName": "test",
+      "LastName": "test",
+      "City": "test",
+      "Street": "test",
+      "PostalCode": "12-123"
+    },
+    {
+      "Email": "test@test.com",
+      "Password": "password",
+      "ConfirmPassword": "password",
+      "DateOfBirth": "2024-12-12",
+      "FirstName": "test",
+      "LastName": "test",
+      "City": "test",
+      "Street": "test",
+      "PostalCode": "12-12"
+    },
+    {
+      "Email": "test@test.com",
+      "Password": "password",
+      "ConfirmPassword": "password",
+      "DateOfBirth": "2024-12-12",
+      "City": "test",
+      "Street": "test",
+      "PostalCode": "12-123"
+    }
+  ]
+}

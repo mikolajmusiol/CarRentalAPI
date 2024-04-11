@@ -16,8 +16,8 @@ namespace CarRentalAPI.IntegrationTests.Controllers
     public class CarControllerTests : IClassFixture<WebApplicationFactory<Program>>
     {
         private const string CAR_CONTROLLER_TEST_FOLDER = "TestData/CarController/";
-        private HttpClient _client;
-        private WebApplicationFactory<Program> _factory;
+        private readonly HttpClient _client;
+        private readonly WebApplicationFactory<Program> _factory;
 
         public CarControllerTests(WebApplicationFactory<Program> factory)
         {
