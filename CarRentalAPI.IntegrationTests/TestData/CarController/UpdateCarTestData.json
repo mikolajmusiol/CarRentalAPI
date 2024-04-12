@@ -1,0 +1,13 @@
+{
+  "ValidInput": [
+    {
+      "Mileage": 123,
+      "Color": "Blue",
+      "HorsePower": 1200
+    },
+    {
+      "Description": "New description",
+      "Color": "White"
+    }
+  ]
+}

@@ -1,14 +1,11 @@
 ﻿using CarRentalAPI.Entities;
 using CarRentalAPI.IntegrationTests.Helpers;
-using CarRentalAPI.IntegrationTests.TestData.CarController;
-using CarRentalAPI.Models;
 using CarRentalAPI.Models.Dtos;
 using FluentAssertions;
 using Microsoft.AspNetCore.Authorization.Policy;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using NLog.Config;
 using Xunit;
 
 namespace CarRentalAPI.IntegrationTests.Controllers
@@ -17,6 +14,7 @@ namespace CarRentalAPI.IntegrationTests.Controllers
     {
         private const string CAR_CONTROLLER_TEST_FOLDER = "TestData/CarController/";
         private readonly HttpClient _client;
+        private readonly Seeder _seeder;
         private readonly WebApplicationFactory<Program> _factory;
 
         public CarControllerTests(WebApplicationFactory<Program> factory)
@@ -35,6 +33,14 @@ namespace CarRentalAPI.IntegrationTests.Controllers
                 });
 
             _client = _factory.CreateClient();
+            _seeder = new Seeder(GetDbContext());
+        }
+
+        private CarRentalDbContext GetDbContext()
+        {
+            var scopeFactory = _factory.Services.GetService<IServiceScopeFactory>();
+            var scope = scopeFactory.CreateScope();
+            return scope.ServiceProvider.GetService<CarRentalDbContext>();
         }
 
         [Theory]
@@ -53,11 +59,10 @@ namespace CarRentalAPI.IntegrationTests.Controllers
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
         }
 
-        [Theory]
-        [InlineData(1)]
-        public async Task GetCar_ForValidId_ReturnsOk(int id)
+        [Fact]
+        public async Task GetCar_ForValidId_ReturnsOk()
         {
-            SeedCars();
+            int id = await _seeder.SeedCar();
             var response = await _client.GetAsync("api/cars/" + id);
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
         }
@@ -66,7 +71,7 @@ namespace CarRentalAPI.IntegrationTests.Controllers
         [JsonData<int>(CAR_CONTROLLER_TEST_FOLDER + "GetCarTestData.json", "InvalidInput")]
         public async Task GetCar_ForInvalidId_ReturnsNotFound(int id)
         {
-            SeedCars();
+            await _seeder.SeedCar();
             var response = await _client.GetAsync("api/cars/" + id);
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
         }
@@ -95,10 +100,10 @@ namespace CarRentalAPI.IntegrationTests.Controllers
         }
 
         [Theory]
-        [ClassData(typeof(UpdateCarValidTestData))]
-        public async Task UpdateCar_ForValidModel_ReturnsOk(int id, UpdateCarDto dto)
+        [JsonData<UpdateCarDto>(CAR_CONTROLLER_TEST_FOLDER + "UpdateCarTestData.json", "ValidInput")]
+        public async Task UpdateCar_ForValidModel_ReturnsOk(UpdateCarDto dto)
         {
-            SeedCars();
+            int id = await _seeder.SeedCar();
             var httpContent = dto.ToHttpContent();
 
             var response = await _client.PutAsync("api/cars/" + id, httpContent);
@@ -117,38 +122,10 @@ namespace CarRentalAPI.IntegrationTests.Controllers
         [Fact]
         public async Task Delete_ForExistingCar_ReturnsNoContent()
         {
-            SeedCars();
-            var response = await _client.DeleteAsync("/api/cars/1");
+            int id = await _seeder.SeedCar();
+            var response = await _client.DeleteAsync("/api/cars/" + id);
 
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.NoContent);
-        }
-
-        private void SeedCars()
-        {
-            var scopeFactory = _factory.Services.GetService<IServiceScopeFactory>();
-            using var scope = scopeFactory.CreateScope();
-            var dbContext = scope.ServiceProvider.GetService<CarRentalDbContext>();
-            if (!dbContext.Cars.Any())
-            {
-                var car = new Car()
-                {
-                    Id = 1,
-                    Brand = "Skoda",
-                    Model = "Fabia I",
-                    YearOfProduction = 2003,
-                    Color = "Red",
-                    HorsePower = 60,
-                    Description = null,
-                    Price = new Price()
-                    {
-                        PriceForAnHour = 60,
-                        PriceForADay = 500,
-                        PriceForAWeek = 3000
-                    }
-                };
-                dbContext.Cars.Add(car);
-                dbContext.SaveChanges();
-            }
         }
     }
 }

@@ -18,11 +18,8 @@ namespace CarRentalAPI.IntegrationTests.Helpers
             if (!await _dbContext.Database.CanConnectAsync()) { throw new Exception("Can't connect to database"); }
 
             var car = GetCar();
-            if (!await _dbContext.Cars.AnyAsync())
-            {
-                await _dbContext.Cars.AddAsync(car);
-                await _dbContext.SaveChangesAsync();
-            }
+            await _dbContext.Cars.AddAsync(car);
+            await _dbContext.SaveChangesAsync();
 
             return car.Id;
         }
@@ -32,11 +29,10 @@ namespace CarRentalAPI.IntegrationTests.Helpers
             if (!await _dbContext.Database.CanConnectAsync()) { throw new Exception("Can't connect to database"); }
 
             var order = GetOrder();
-            if (!await _dbContext.Orders.AnyAsync())
-            {
-                await _dbContext.Orders.AddAsync(order);
-                await _dbContext.SaveChangesAsync();
-            }
+            
+            await _dbContext.Orders.AddAsync(order);
+            await _dbContext.SaveChangesAsync();
+            
 
             return order.Id;
         }
@@ -46,11 +42,9 @@ namespace CarRentalAPI.IntegrationTests.Helpers
             if (!await _dbContext.Database.CanConnectAsync()) { throw new Exception("Can't connect to database"); }
 
             var user = GetUser();
-            if (!await _dbContext.Users.AnyAsync())
-            {
-                await _dbContext.Users.AddAsync(user);
-                await _dbContext.SaveChangesAsync();
-            }
+
+            await _dbContext.Users.AddAsync(user);
+            await _dbContext.SaveChangesAsync();
 
             return user.Id;
         }
