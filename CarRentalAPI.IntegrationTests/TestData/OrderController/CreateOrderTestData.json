@@ -1,0 +1,20 @@
+{
+  "InvalidInput": [
+    {
+      "RentalFrom": "2024-12-13",
+      "RentalTo": "2024-12-12"
+    },
+    {
+      "RentalFrom": "2024-12-12",
+      "RentalTo": "2024-11-12"
+    },
+    {
+      "RentalFrom": "2020-12-13",
+      "RentalTo": "2019-12-12"
+    },
+    {
+      "RentalFrom": "2022-12-10",
+      "RentalTo": "2021-12-12"
+    }
+  ]
+}

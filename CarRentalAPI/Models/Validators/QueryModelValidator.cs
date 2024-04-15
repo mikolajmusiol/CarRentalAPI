@@ -8,9 +8,11 @@ namespace CarRentalAPI.Models.Validators
         private int[] allowedPageSizes = new[] { 5, 10, 15 };
 
         private string[] allowedSortByColumnNames =
-            {nameof(Car.Brand), nameof(Car.Model), nameof(Car.Mileage), 
+        {    nameof(Car.Brand), nameof(Car.Model), nameof(Car.Mileage), 
              nameof(Car.Price.PriceForAnHour), nameof(Car.Price.PriceForADay), 
-             nameof(Car.Price.PriceForADay), nameof(Car.YearOfProduction)};
+             nameof(Car.Price.PriceForADay), nameof(Car.YearOfProduction),
+             nameof(Order.Value), nameof(Order.RentalFrom), nameof(Order.RentalTo)
+        };
 
         public QueryModelValidator()
         {

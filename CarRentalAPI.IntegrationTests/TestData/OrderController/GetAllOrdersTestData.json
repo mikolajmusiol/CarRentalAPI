@@ -1,0 +1,16 @@
+{
+  "ValidInput": [
+    "pageNumber=1&pageSize=5&sortBy=Value&sortDirection=Ascending",
+    "searchPhrase=Skoda&pageNumber=2&pageSize=10&sortBy=RentalTo&SortDirection=Ascending",
+    "searchPhrase=Skoda&pageNumber=3&pageSize=10&sortBy=RentalFrom&SortDirection=Ascending",
+    "searchPhrase=Audi&pageNumber=7&pageSize=15&sortDirection=Descending",
+    "pageNumber=3&pageSize=15&sortDirection=Descending"
+  ],
+
+  "InvalidInput": [
+    "pageNumber=1&pageSize=12&sortBy=Value&sortDirection=Ascending",
+    "pageNumber=-1&pageSize=5&sortBy=Value&sortDirection=Ascending",
+    "pageNumber=1&pageSize=3&sortBy=Value&sortDirection=Ascending",
+    "pageNumber=1&pageSize=5&sortBy=Id&sortDirection=Ascending"
+  ]
+}

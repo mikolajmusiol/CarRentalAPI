@@ -8,6 +8,7 @@ using CarRentalAPI.Utilities.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Security.Claims;
 
 namespace CarRentalAPI.Services
 {
@@ -150,7 +151,7 @@ namespace CarRentalAPI.Services
                 .Include(x => x.CreatedBy)
                 .Include(x => x.Car)
                 .Include(x => x.Car.Price)
-                .FirstOrDefaultAsync(x => x.Id == orderId && x.CreatedById == _userContextService.GetUserId);
+                .FirstOrDefaultAsync(x => x.Id == orderId && (x.CreatedById == _userContextService.GetUserId || _userContextService.User.IsInRole("Admin")));
 
             if (order is null)
             {

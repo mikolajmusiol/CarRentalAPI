@@ -1,0 +1,14 @@
+{
+	"ValidInput": [
+		{
+			"RentalFrom": "2024-12-13"
+		},
+		{
+			"RentalTo": "2024-12-12"
+		},
+		{
+			"RentalFrom": "2024-12-12",
+			"RentalTo": "2024-12-13"
+		}
+	]
+}
