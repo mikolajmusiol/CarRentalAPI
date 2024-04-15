@@ -1,0 +1,39 @@
+{
+  "InvalidInput": [
+    {
+      "Email": "test@test.pl",
+      "Password": "password",
+      "ConfirmPassword": "password",
+      "DateOfBirth": "2024-12-12"
+    },
+    {
+      "Email": "unique@test.pl",
+      "Password": "password",
+      "ConfirmPassword": "password"
+    },
+    {
+      "Email": "unique@test.pl",
+      "Password": "password",
+      "ConfirmPassword": "password2",
+      "DateOfBirth": "2024-12-12"
+    },
+    {
+      "Email": "unique@test.pl",
+      "Password": "password",
+      "ConfirmPassword": "password",
+      "DateOfBirth": "2024-12-12",
+      "PostalCode": "123-123"
+    },
+    {
+      "Email": "unique@test.pl",
+      "Password": "p",
+      "ConfirmPassword": "p",
+      "DateOfBirth": "2024-12-12"
+    },
+    {
+      "Email": null,
+      "Password": null,
+      "ConfirmPassword": null
+    }
+  ]
+}
