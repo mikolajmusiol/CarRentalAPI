@@ -13,43 +13,34 @@ namespace CarRentalAPI.IntegrationTests.Helpers
         }
 
 
-        public async Task<int> SeedCar()
+        public async Task SeedCar(Car car)
         {
             if (!await _dbContext.Database.CanConnectAsync()) { throw new Exception("Can't connect to database"); }
 
-            var car = GetCar();
             await _dbContext.Cars.AddAsync(car);
             await _dbContext.SaveChangesAsync();
-
-            return car.Id;
         }
 
-        public async Task<int> SeedOrder()
+        public async Task SeedOrder(Order order)
         {
             if (!await _dbContext.Database.CanConnectAsync()) { throw new Exception("Can't connect to database"); }
 
-            var order = GetOrder();
-            
             await _dbContext.Orders.AddAsync(order);
             await _dbContext.SaveChangesAsync();
-            
-
-            return order.Id;
         }
 
-        public async Task<int> SeedUser()
+        public async Task SeedUser(User user)
         {
             if (!await _dbContext.Database.CanConnectAsync()) { throw new Exception("Can't connect to database"); }
 
-            var user = GetUser();
-
-            await _dbContext.Users.AddAsync(user);
-            await _dbContext.SaveChangesAsync();
-
-            return user.Id;
+            if (!await _dbContext.Users.AnyAsync())
+            {
+                await _dbContext.Users.AddAsync(user);
+                await _dbContext.SaveChangesAsync();
+            }
         }
 
-        private Car GetCar()
+        public Car GetCar()
         {
             var car = new Car()
             {
@@ -70,7 +61,21 @@ namespace CarRentalAPI.IntegrationTests.Helpers
             return car;
         }
 
-        private User GetUser()
+        public Order GetOrder()
+        {
+            var order = new Order()
+            {
+                Value = 1,
+                RentalFrom = DateTime.Now,
+                RentalTo = DateTime.Now.AddDays(1),
+                Car = GetCar(),
+                CreatedBy = GetUser()
+            };
+
+            return order;
+        }
+
+        public User GetUser()
         {
             var user = new User()
             {
@@ -82,22 +87,5 @@ namespace CarRentalAPI.IntegrationTests.Helpers
 
             return user;
         }
-
-        private Order GetOrder()
-        {
-            var order = new Order()
-            {
-                Value = 1,
-                RentalFrom = DateTime.Now,
-                RentalTo = DateTime.Now.AddDays(1),
-                CreatedById = 1,
-                CarId = 1,
-                Car = GetCar(),
-                CreatedBy = GetUser()
-            };
-
-            return order;
-        }
-
     }
 }

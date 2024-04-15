@@ -62,8 +62,10 @@ namespace CarRentalAPI.IntegrationTests.Controllers
         [Fact]
         public async Task GetCar_ForValidId_ReturnsOk()
         {
-            int id = await _seeder.SeedCar();
-            var response = await _client.GetAsync("api/cars/" + id);
+            var car = _seeder.GetCar();
+            await _seeder.SeedCar(car);
+
+            var response = await _client.GetAsync("api/cars/" + car.Id);
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
         }
 
@@ -71,7 +73,6 @@ namespace CarRentalAPI.IntegrationTests.Controllers
         [JsonData<int>(CAR_CONTROLLER_TEST_FOLDER + "GetCarTestData.json", "InvalidInput")]
         public async Task GetCar_ForInvalidId_ReturnsNotFound(int id)
         {
-            await _seeder.SeedCar();
             var response = await _client.GetAsync("api/cars/" + id);
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
         }
@@ -103,10 +104,12 @@ namespace CarRentalAPI.IntegrationTests.Controllers
         [JsonData<UpdateCarDto>(CAR_CONTROLLER_TEST_FOLDER + "UpdateCarTestData.json", "ValidInput")]
         public async Task UpdateCar_ForValidModel_ReturnsOk(UpdateCarDto dto)
         {
-            int id = await _seeder.SeedCar();
+            var car = _seeder.GetCar();
+            await _seeder.SeedCar(car);
+
             var httpContent = dto.ToHttpContent();
 
-            var response = await _client.PutAsync("api/cars/" + id, httpContent);
+            var response = await _client.PutAsync("api/cars/" + car.Id, httpContent);
 
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
         }
@@ -122,8 +125,10 @@ namespace CarRentalAPI.IntegrationTests.Controllers
         [Fact]
         public async Task Delete_ForExistingCar_ReturnsNoContent()
         {
-            int id = await _seeder.SeedCar();
-            var response = await _client.DeleteAsync("/api/cars/" + id);
+            var car = _seeder.GetCar();
+            await _seeder.SeedCar(car);
+
+            var response = await _client.DeleteAsync("/api/cars/" + car.Id);
 
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.NoContent);
         }
