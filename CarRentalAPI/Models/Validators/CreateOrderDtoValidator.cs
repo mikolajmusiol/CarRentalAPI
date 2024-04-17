@@ -1,5 +1,6 @@
 ﻿using CarRentalAPI.Entities;
 using CarRentalAPI.Models.Dtos;
+using CarRentalAPI.Utilities;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,6 +10,17 @@ namespace CarRentalAPI.Models.Validators
     {
         public CreateOrderDtoValidator(CarRentalDbContext dbContext)
         {
+            RuleFor(x => x.CarId)
+                .Custom((value, context) =>
+                {
+                    var car = dbContext.Cars.FirstOrDefault(x => x.Id == value);
+                    if (car == null) 
+                    {
+                        context.AddFailure("CarId", "Car not found");
+                    }
+                });
+
+
             RuleFor(x => new { x.CarId, x.RentalFrom, x.RentalTo })
                 .Custom((value, context) =>
                 {
@@ -21,7 +33,7 @@ namespace CarRentalAPI.Models.Validators
 
                     if (order != null)
                     {
-                        bool carIsRented = DateInRange(value.RentalFrom, order.RentalFrom, order.RentalTo) || DateInRange(value.RentalTo, order.RentalFrom, order.RentalTo);
+                        bool carIsRented = CheckOverlap.OfTwoTimePeriods(value.RentalFrom, value.RentalTo, order.RentalFrom, order.RentalTo);
 
                         if (carIsRented)
                         {
@@ -29,11 +41,6 @@ namespace CarRentalAPI.Models.Validators
                         }
                     }
                 });
-        }
-
-        private bool DateInRange(DateTime dateTimeToCheck, DateTime dateTimeFrom, DateTime dateTimeTo)
-        {
-            return dateTimeToCheck >= dateTimeFrom && dateTimeToCheck <= dateTimeTo;
         }
     }
 }
