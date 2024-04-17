@@ -1,0 +1,29 @@
+{
+  "InvalidInput": [
+    {
+      "CarId": 1,
+      "RentalFrom": "2024-01-05",
+      "RentalTo": "2024-01-15"
+    },
+    {
+      "CarId": 1,
+      "RentalFrom": "2024-01-15",
+      "RentalTo": "2024-01-25"
+    },
+    {
+      "CarId": 1,
+      "RentalFrom": "2024-01-12",
+      "RentalTo": "2024-01-17"
+    },
+    {
+      "CarId": 1,
+      "RentalFrom": "2024-01-08",
+      "RentalTo": "2024-01-22"
+    },
+    {
+      "CarId": 1,
+      "RentalFrom": "2024-01-10",
+      "RentalTo": "2024-01-20"
+    }
+  ]
+}
