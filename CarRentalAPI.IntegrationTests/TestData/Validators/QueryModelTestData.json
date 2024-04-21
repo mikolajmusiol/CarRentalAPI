@@ -1,0 +1,49 @@
+{
+	"ValidInput": [
+		{
+			"SearchPhrase": null,
+			"PageNumber": 1,
+			"PageSize": 5,
+			"SortBy": null,
+			"SortDirection": 1
+		},
+		{
+			"SearchPhrase": null,
+			"PageNumber": 2,
+			"PageSize": 5,
+			"SortBy": "Brand",
+			"SortDirection": 0
+		},
+		{
+			"SearchPhrase": "Skoda",
+			"PageNumber": 3,
+			"PageSize": 10,
+			"SortBy": "Model",
+			"SortDirection": 0
+		}
+	],
+
+	"InvalidInput": [
+		{
+			"SearchPhrase": null,
+			"PageNumber": 0,
+			"PageSize": 5,
+			"SortBy": null,
+			"SortDirection": 1
+		},
+		{
+			"SearchPhrase": null,
+			"PageNumber": 2,
+			"PageSize": 3,
+			"SortBy": "Brand",
+			"SortDirection": 0
+		},
+		{
+			"SearchPhrase": null,
+			"PageNumber": 3,
+			"PageSize": 10,
+			"SortBy": "NotAllowed",
+			"SortDirection": 0
+		}
+	]
+}
